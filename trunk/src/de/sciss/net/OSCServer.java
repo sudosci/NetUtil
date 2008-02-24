@@ -450,7 +450,7 @@ implements OSCBidi
 		private final OSCReceiver		rcv;
 		private final OSCTransmitter	trns;
 
-		private UDPOSCServer( OSCPacketCodec c, InetSocketAddress localAddress )
+		protected UDPOSCServer( OSCPacketCodec c, InetSocketAddress localAddress )
 		throws IOException
 		{
 			super( c, UDP );
@@ -578,7 +578,7 @@ implements OSCBidi
 		private final InetSocketAddress		localAddress;
 		private final ServerSocketChannel	ssch;
 		
-		private TCPOSCServer( OSCPacketCodec c, InetSocketAddress localAddress )
+		protected TCPOSCServer( OSCPacketCodec c, InetSocketAddress localAddress )
 		throws IOException
 		{
 			super( c, TCP );
@@ -742,7 +742,7 @@ implements OSCBidi
 			try {
 				stop();
 			}
-			catch( IOException e1 ) {}
+			catch( IOException e1 ) { /* ignored */ }
 			
 			try {
 				ssch.close();

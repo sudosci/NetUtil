@@ -66,7 +66,7 @@ import java.nio.channels.SocketChannel;
  *	to the special address &quot;127.0.0.1&quot; (called &quot;loopback&quot;).
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 02-Jul-07
+ *  @version	0.33, 25-Feb-08
  *
  *	@see				OSCClient
  *	@see				OSCServer
@@ -83,9 +83,9 @@ implements OSCChannel
 	protected ByteBuffer				byteBuf			= null;
 
     protected int						dumpMode		= kDumpOff;
-	protected PrintStream				printStream		= null;
+    protected PrintStream				printStream		= null;
 	
-	protected OSCPacketCodec			c;
+	private OSCPacketCodec				c;
 	private final String				protocol;
 	
 	protected SocketAddress				target			= null;
@@ -557,12 +557,12 @@ implements OSCChannel
 	{
 		private DatagramChannel	dch;
 	
-		private UDPOSCTransmitter( OSCPacketCodec c, InetSocketAddress localAddress )
+		protected UDPOSCTransmitter( OSCPacketCodec c, InetSocketAddress localAddress )
 		{
 			super( c, UDP, localAddress, true );
 		}
 
-		private UDPOSCTransmitter( OSCPacketCodec c, DatagramChannel dch )
+		protected UDPOSCTransmitter( OSCPacketCodec c, DatagramChannel dch )
 		{
 			super( c, UDP, new InetSocketAddress( dch.socket().getLocalAddress(), dch.socket().getLocalPort() ), false );
 			
@@ -623,7 +623,7 @@ implements OSCChannel
 				try {
 					dch.close();
 				}
-				catch( IOException e1 ) {}
+				catch( IOException e1 ) { /* ignored */ }
 				dch = null;
 			}
 		}
@@ -671,12 +671,12 @@ implements OSCChannel
 	{
 		private SocketChannel sch;
 	
-		private TCPOSCTransmitter( OSCPacketCodec c, InetSocketAddress localAddress )
+		protected TCPOSCTransmitter( OSCPacketCodec c, InetSocketAddress localAddress )
 		{
 			super( c, TCP, localAddress, true );
 		}
 		
-		private TCPOSCTransmitter( OSCPacketCodec c, SocketChannel sch )
+		protected TCPOSCTransmitter( OSCPacketCodec c, SocketChannel sch )
 		{
 			super( c, TCP, new InetSocketAddress( sch.socket().getLocalAddress(), sch.socket().getLocalPort() ), false );
 			

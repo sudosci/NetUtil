@@ -40,14 +40,14 @@ import de.sciss.net.test.NetUtilTest;
  *	more useful utility methods.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 07-May-07
+ *  @version	0.33, 25-Feb-08
  */
 public class NetUtil
 {
 	private static final double VERSION	= 0.33;
 	private static final ResourceBundle resBundle = ResourceBundle.getBundle( "NetUtilStrings" );
 
-    private NetUtil() {}
+    private NetUtil() { /* empty */ }
 
 	/**
 	 *	This method gets called when one tries
@@ -62,16 +62,16 @@ public class NetUtil
 		if( args.length == 1 ) {
 			if( args[ 0 ].equals( "--testTCPClient" )) {
 				testo	= true;
-				NetUtilTest.client( OSCClient.TCP );
+				NetUtilTest.client( OSCChannel.TCP );
 			} else if( args[ 0 ].equals( "--testUDPClient" )) {
 				testo	= true;
-				NetUtilTest.client( OSCClient.UDP );
+				NetUtilTest.client( OSCChannel.UDP );
 			} else if( args[ 0 ].equals( "--testTCPServer" )) {
 				testo	= true;
-				NetUtilTest.server( OSCClient.TCP );
+				NetUtilTest.server( OSCChannel.TCP );
 			} else if( args[ 0 ].equals( "--testUDPServer" )) {
 				testo	= true;
-				NetUtilTest.server( OSCClient.UDP );
+				NetUtilTest.server( OSCChannel.UDP );
 			} else if( args[ 0 ].equals( "--testCodecSpeed" )) {
 				testo	= true;
 				NetUtilTest.codecSpeed();

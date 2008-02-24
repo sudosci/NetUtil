@@ -50,15 +50,15 @@ import de.sciss.net.OSCServer;
  *	Some static test run methods.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 07-Mar-07
+ *  @version	0.33, 25-Feb-08
  *
  *	@since		NetUtil 0.33
  */
 public abstract class NetUtilTest
 {
-	private static boolean pause = false;
+	protected static boolean pause = false;
 
-	private NetUtilTest() {}
+	private NetUtilTest() { /* empty */ }
 
 	/**
 	 *	Tests the client functionality on a given protocol.
@@ -121,7 +121,7 @@ public abstract class NetUtilTest
 					sync.wait();
 				}
 			}
-			catch( InterruptedException e1 ) {}
+			catch( InterruptedException e1 ) { /* ignored */}
 			catch( IOException e2 ) {
 				e2.printStackTrace();
 			}
@@ -200,7 +200,7 @@ public abstract class NetUtilTest
 					try {
 						Thread.sleep( 4000 );
 					}
-					catch( InterruptedException e1 ) {}
+					catch( InterruptedException e1 ) { /* ignored */ }
 					pause = false;
 				}
 				postln( "  start()" );
@@ -210,7 +210,7 @@ public abstract class NetUtilTest
 						sync.wait();
 					}
 				}
-				catch( InterruptedException e1 ) {}
+				catch( InterruptedException e1 ) { /* ignore */ }
 
 				postln( "  stop()" );
 				c.stop();
@@ -326,7 +326,7 @@ public abstract class NetUtilTest
 		catch( IOException e1 ) { e1.printStackTrace(); }
 	}
 
-	private static void postln( String s )
+	protected static void postln( String s )
 	{
 		System.err.println( s );
 	}

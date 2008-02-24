@@ -74,7 +74,7 @@ public class OSCPacketCodec
 	
 //	private CharsetDecoder		charsetDecoder;
 //	private CharsetEncoder		charsetEncoder;
-	private String				charsetName;
+	protected String			charsetName;
 
 	private static final byte[] bndlIdentifier  			= { 0x23, 0x62, 0x75, 0x6E, 0x64, 0x6C, 0x65, 0x00 }; // "#bundle" (4-aligned)
 
@@ -684,6 +684,8 @@ public class OSCPacketCodec
 //	implements Atom
 	extends Atom
 	{
+		protected IntegerAtom() { /* empty */ }
+		
 		public Object decodeAtom( byte typeTag, ByteBuffer b )
 		throws IOException
 		{
@@ -715,6 +717,8 @@ public class OSCPacketCodec
 //	implements Atom
 	extends Atom
 	{
+		protected FloatAtom() { /* empty */ }
+
 		public Object decodeAtom( byte typeTag, ByteBuffer b )
 		throws IOException
 		{
@@ -746,6 +750,8 @@ public class OSCPacketCodec
 //	implements Atom
 	extends Atom
 	{
+		protected LongAtom() { /* empty */ }
+
 		public Object decodeAtom( byte typeTag, ByteBuffer b )
 		throws IOException
 		{
@@ -777,6 +783,8 @@ public class OSCPacketCodec
 //	implements Atom
 	extends Atom
 	{
+		protected DoubleAtom() { /* empty */ }
+
 		public Object decodeAtom( byte typeTag, ByteBuffer b )
 		throws IOException
 		{
@@ -808,6 +816,8 @@ public class OSCPacketCodec
 //	implements Atom
 	extends Atom
 	{
+		protected DoubleAsFloatAtom() { /* empty */ }
+
 		public Object decodeAtom( byte typeTag, ByteBuffer b )
 		throws IOException
 		{
@@ -839,6 +849,8 @@ public class OSCPacketCodec
 //	implements Atom
 	extends Atom
 	{
+		protected LongAsIntegerAtom() { /* empty */ }
+		
 		public Object decodeAtom( byte typeTag, ByteBuffer b )
 		throws IOException
 		{
@@ -874,6 +886,8 @@ public class OSCPacketCodec
 ////		private ByteBuffer	lastBuf;
 //		private byte[]		lastBuf;
 		
+		protected StringAtom() { /* empty */ }
+
 		public Object decodeAtom( byte typeTag, ByteBuffer b )
 		throws IOException
 		{
@@ -927,6 +941,8 @@ public class OSCPacketCodec
 //	implements Atom
 	extends Atom
 	{
+		protected BlobAtom() { /* empty */ }
+
 		public Object decodeAtom( byte typeTag, ByteBuffer b )
 		throws IOException
 		{
@@ -962,6 +978,8 @@ public class OSCPacketCodec
 //	implements Atom
 	extends Atom
 	{
+		protected PacketAtom() { /* empty */ }
+
 		public Object decodeAtom( byte typeTag, ByteBuffer b )
 		throws IOException
 		{

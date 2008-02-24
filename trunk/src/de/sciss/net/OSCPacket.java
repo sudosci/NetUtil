@@ -49,7 +49,7 @@ import java.nio.ByteBuffer;
  *  or decoding a received message from a given buffer.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 28-Apr-07
+ *  @version	0.33, 25-Feb-08
  */
 public abstract class OSCPacket
 {
@@ -61,7 +61,7 @@ public abstract class OSCPacket
 	 *  Refer to the subclasses for the particular
 	 *  way they instantiate the class
 	 */
-	protected OSCPacket() {}
+	protected OSCPacket() { /* empty */ }
 	
 	/**
 	 *  Calculates and returns
@@ -218,7 +218,7 @@ public abstract class OSCPacket
 		txt[ 56 ] = (byte) 0x7C;
 		
 		stream.println();
-		for( i = (int) b.position(); i < lim; ) {
+		for( i = b.position(); i < lim; ) {
 			j = 0;
 			txt[ j++ ]	= hex[ (i >> 12) & 0xF ];
 			txt[ j++ ]	= hex[ (i >> 8) & 0xF ];

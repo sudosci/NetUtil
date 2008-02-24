@@ -123,7 +123,7 @@ import java.net.SocketAddress;
  *	@see		OSCServer
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 02-Jul-07
+ *  @version	0.33, 25-Feb-08
  *
  *	@since		NetUtil 0.30
  */

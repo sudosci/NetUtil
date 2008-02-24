@@ -164,7 +164,7 @@ import java.util.List;
  *	before calling <code>new OSCReceiver()</code>.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 02-Jul-07
+ *  @version	0.33, 25-Feb-08
  *
  *	@see				OSCClient
  *	@see				OSCServer
@@ -187,14 +187,14 @@ implements OSCChannel, Runnable
 
 	protected boolean					isListening		= false;
 	
-	protected final Object				bufSync			= new Object();	// buffer (re)allocation
+	private final Object				bufSync			= new Object();	// buffer (re)allocation
 	private int							bufSize			= DEFAULTBUFSIZE;
 	protected ByteBuffer				byteBuf			= null;
 
     private int							dumpMode		= kDumpOff;
 	private PrintStream					printStream		= null;
 	
-	protected OSCPacketCodec			c;
+	private OSCPacketCodec				c;
 	private final String				protocol;
 
 	protected final InetSocketAddress	localAddress;
@@ -799,13 +799,13 @@ implements OSCChannel, Runnable
 	{
 		private DatagramChannel	dch;
 	
-		private UDPOSCReceiver( OSCPacketCodec c, InetSocketAddress localAddress )
+		protected UDPOSCReceiver( OSCPacketCodec c, InetSocketAddress localAddress )
 		throws IOException
 		{
 			super( c, UDP, localAddress, true );
 		}
 		
-		private UDPOSCReceiver( OSCPacketCodec c, DatagramChannel dch )
+		protected UDPOSCReceiver( OSCPacketCodec c, DatagramChannel dch )
 		throws IOException
 		{
 			super( c, UDP, new InetSocketAddress( dch.socket().getLocalAddress(), dch.socket().getLocalPort() ), false );
@@ -947,12 +947,12 @@ listen:			while( isListening )
 	{
 		private SocketChannel	sch		= null;
 	
-		private TCPOSCReceiver( OSCPacketCodec c, InetSocketAddress localAddress )
+		protected TCPOSCReceiver( OSCPacketCodec c, InetSocketAddress localAddress )
 		{
 			super( c, TCP, localAddress, true );
 		}
 		
-		private TCPOSCReceiver( OSCPacketCodec c, SocketChannel sch )
+		protected TCPOSCReceiver( OSCPacketCodec c, SocketChannel sch )
 		{
 			super( c, TCP, new InetSocketAddress( sch.socket().getLocalAddress(), sch.socket().getLocalPort() ), false );
 			
