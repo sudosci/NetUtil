@@ -74,11 +74,11 @@ TD.when {
 </HEAD>
 <BODY>
 <h1>
-NetUtil <small>-- version 0.33 (built 02-jul-07) --</small>
+NetUtil <small>-- version 0.34 (built 15-apr-08) --</small>
 </h1>
 <h3>statement</h3>
 <p>
-NetUtil is a compact and efficient java library for sending and receiving messages using the OpenSoundControl protocol. It is (C)opyright 2004&ndash;2007 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the <A HREF="licenses/NetUtil-License.txt">GNU Lesser General Public License</A> and comes with absolutely no warranties. To contact the author, send an email to <code>contact&nbsp;at&nbsp;sciss.de</code>
+NetUtil is a compact and efficient java library for sending and receiving messages using the OpenSoundControl protocol. It is (C)opyright 2004&ndash;2008 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the <A HREF="licenses/NetUtil-License.txt">GNU Lesser General Public License</A> and comes with absolutely no warranties. To contact the author, send an email to <code>contact&nbsp;at&nbsp;sciss.de</code>
 </p>
 <p>
 For project status, API and current version, visit <a href="http://www.sciss.de/netutil/" class="ext">www.sciss.de/netutil</a>.
@@ -97,6 +97,7 @@ The current version can be downloaded here:
 <UL>
 <LI><A HREF="http://sourceforge.net/projects/netutil" CLASS="ext">sourceforge.net/projects/netutil</A></LI>
 </UL>
+<P>Either go to the regular download section for stable builds, or use SVN to grab the latest developer sourcecode version.</P>
 <h3>
 documentation
 </h3>
@@ -118,7 +119,7 @@ The source code can be compiled using Eclipse SDK 3.2+ (<A HREF="http://www.ecli
 </P><PRE>> ant clean jar
 > ant test
 </PRE>
-<P>The <code>&quot;test&quot;</code> will run with UDP server test, you can leave away that task.
+<P>The <code>&quot;test&quot;</code> will run with UDP server test, you can leave away that task. If you want a more compact build without debugging (line numbers) information, add <code>-Ddebug=false</code> to the ant call.
 </P><P>
 The final product will be a file <code>build/NetUtil.jar</code> which you can include in the classpath of your application.
 <P>The class <code>de.sciss.net.test.NetUtilTest</code> is supplied for simple testing routines that demonstrate the use of some of the classes (some of the examples printed in the API docs). Execute <code>java -jar build/NetUtil.jar</code> to learn about commandline options for running these examples. For more sophisticated examples of using the library, have a look at <A HREF="http://www.sciss.de/jcollider" CLASS="ext">JCollider</A>, <A HREF="http://www.sciss.de/eisenkraut" CLASS="ext">Eisenkraut</A> or <A HREF="http://www.sciss.de/swingOSC" CLASS="ext">SwingOSC</A>.
@@ -139,6 +140,10 @@ to-do / known issues
 <LI>add helper classes (multi-server wrapper, message deferrer)</LI>
 </UL>
 <h3>change history</h3>
+<h4>v0.34 (apr 2008 - SVN rev. 5)</h4>
+<UL>
+<LI>Added javadoc comments for OSCPacketCodec</LI>
+</UL>
 <h4>v0.33 (jul 2007)</h4>
 <UL>
 <LI>Added separate OSCPacketCodec class and factory methods for OSCClient, OSCServer, OSCTransmitter, OSCReceiver, using this new codec. The codec allows to specify 64-bit primitives behaviour among others. The SpecificOSCMessage class was dropped.</LI>
@@ -203,8 +208,5 @@ java is a trademark of sun microsystems<br>
 i think mac os and xcode are trademarks of apple inc<br>
 windows is one of microsoft corp<br>
 jever is a trademark of some west german beer factory
-</p>
-<p>
-lastmod: 02-jul-07
 </p>
 </BODY></HTML>

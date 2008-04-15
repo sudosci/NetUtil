@@ -2,7 +2,7 @@
  *  NetUtil.java
  *  de.sciss.net (NetUtil)
  *
- *  Copyright (c) 2004-2007 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2004-2008 Hanns Holger Rutz. All rights reserved.
  *
  *	This library is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU Lesser General Public
@@ -40,11 +40,11 @@ import de.sciss.net.test.NetUtilTest;
  *	more useful utility methods.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 25-Feb-08
+ *  @version	0.34, 15-Apr-08
  */
 public class NetUtil
 {
-	private static final double VERSION	= 0.33;
+	private static final double VERSION	= 0.34;
 	private static final ResourceBundle resBundle = ResourceBundle.getBundle( "NetUtilStrings" );
 
     private NetUtil() { /* empty */ }
