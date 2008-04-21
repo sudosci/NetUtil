@@ -40,11 +40,11 @@ import de.sciss.net.test.NetUtilTest;
  *	more useful utility methods.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.34, 15-Apr-08
+ *  @version	0.35, 21-Apr-08
  */
 public class NetUtil
 {
-	private static final double VERSION	= 0.34;
+	private static final double VERSION	= 0.35;
 	private static final ResourceBundle resBundle = ResourceBundle.getBundle( "NetUtilStrings" );
 
     private NetUtil() { /* empty */ }

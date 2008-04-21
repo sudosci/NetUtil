@@ -193,6 +193,12 @@ implements OSCBidi
 	 *	Creates a new instance of an <code>OSCClient</code>, using
 	 *	default codec and a specific transport protocol and port. It
 	 *	uses the local machine's IP.
+	 *	<p>
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the client listens and from which it sends),
+	 *	it does not determine the remote sockets from which messages can be received
+	 *	and to which messages are sent. The target socket can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
@@ -211,6 +217,12 @@ implements OSCBidi
 	 *	Creates a new instance of an <code>OSCClient</code>, using
 	 *	a specific codec and transport protocol and port. It
 	 *	uses the local machine's IP.
+	 *	<p>
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the client listens and from which it sends),
+	 *	it does not determine the remote sockets from which messages can be received
+	 *	and to which messages are sent. The target socket can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -232,6 +244,12 @@ implements OSCBidi
 	 *	Creates a new instance of an <code>OSCClient</code>, using
 	 *	default codec and a specific transport protocol and port. It
 	 *	uses the local machine's IP or the &quot;loopback&quot; address.
+	 *	<p>
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the client listens and from which it sends),
+	 *	it does not determine the remote sockets from which messages can be received
+	 *	and to which messages are sent. The target socket can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
@@ -254,6 +272,12 @@ implements OSCBidi
 	 *	Creates a new instance of an <code>OSCClient</code>, using
 	 *	a specific codec and transport protocol and port. It
 	 *	uses the local machine's IP or the &quot;loopback&quot; address.
+	 *	<p>
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the client listens and from which it sends),
+	 *	it does not determine the remote sockets from which messages can be received
+	 *	and to which messages are sent. The target socket can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -337,6 +361,8 @@ implements OSCBidi
 	/**
 	 *	Initializes network channel (if necessary) and establishes connection for transports requiring
 	 *	connectivity (e.g. TCP). Do not call this method when the client is already connected.
+	 *	Note that <code>start</code> implicitly calls <code>connect</code> if necessary, so
+	 *	usually you will not need to call <code>connect</code> yourself.
 	 *	
 	 *	@throws	IOException	if a networking error occurs. Possible reasons: - the underlying
 	 *						network channel had been closed by the server. - the transport
@@ -356,7 +382,8 @@ implements OSCBidi
 	 *	Queries the connection state of the client.
 	 *
 	 *	@return	<code>true</code> if the client is connected, <code>false</code> otherwise. For transports that do not use
-	 *			connectivity (e.g. UDP) this always returns <code>false</code>.
+	 *			connectivity (e.g. UDP) this returns <code>false</code>, if the
+	 *			underlying <code>DatagramChannel</code> has not yet been created.
 	 *
 	 *	@see	#connect()
 	 */
@@ -411,7 +438,8 @@ implements OSCBidi
 
 	/**
 	 *	Starts the client. This calls <code>connect</code> if the transport requires
-	 *	connectivity (e.g. TCP). It then tells the OSC receiver to start listening.
+	 *	connectivity (e.g. TCP) and the channel is not yet connected.
+	 *	It then tells the underlying OSC receiver to start listening.
 	 *	
 	 *	@throws	IOException	if a networking error occurs. Possible reasons: - the underlying
 	 *						network channel had been closed by the server. - the transport

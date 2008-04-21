@@ -226,6 +226,14 @@ implements OSCBidi
 	 *	Creates a new instance of an <code>OSCServer</code>, using
 	 *	default codec and a specific transport protocol and port. It
 	 *	uses the local machine's IP.
+	 *	<p>
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the server listens and from which it sends, or
+	 *	in the case of TCP transport, from which it establishes client connections),
+	 *	it does not determine the remote sockets. The address of a remote client
+	 *	communicating to this server is passed in the <code>messageReceived</code>
+	 *	method of any registered <code>OSCListener</code>, and must be picked
+	 *	up and handed in to the <code>send</code> method to reply back to the client!
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
@@ -244,6 +252,14 @@ implements OSCBidi
 	 *	Creates a new instance of an <code>OSCServer</code>, using
 	 *	a specific codec and transport protocol and port. It
 	 *	uses the local machine's IP.
+	 *	<p>
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the server listens and from which it sends, or
+	 *	in the case of TCP transport, from which it establishes client connections),
+	 *	it does not determine the remote sockets. The address of a remote client
+	 *	communicating to this server is passed in the <code>messageReceived</code>
+	 *	method of any registered <code>OSCListener</code>, and must be picked
+	 *	up and handed in to the <code>send</code> method to reply back to the client!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -265,6 +281,14 @@ implements OSCBidi
 	 *	Creates a new instance of an <code>OSCServer</code>, using
 	 *	default codec and a specific transport protocol and port. It
 	 *	uses the local machine's IP or the &quot;loopback&quot; address.
+	 *	<p>
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the server listens and from which it sends, or
+	 *	in the case of TCP transport, from which it establishes client connections),
+	 *	it does not determine the remote sockets. The address of a remote client
+	 *	communicating to this server is passed in the <code>messageReceived</code>
+	 *	method of any registered <code>OSCListener</code>, and must be picked
+	 *	up and handed in to the <code>send</code> method to reply back to the client!
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
@@ -287,6 +311,14 @@ implements OSCBidi
 	 *	Creates a new instance of an <code>OSCServer</code>, using
 	 *	a specific codec and transport protocol and port. It
 	 *	uses the local machine's IP or the &quot;loopback&quot; address.
+	 *	<p>
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the server listens and from which it sends, or
+	 *	in the case of TCP transport, from which it establishes client connections),
+	 *	it does not determine the remote sockets. The address of a remote client
+	 *	communicating to this server is passed in the <code>messageReceived</code>
+	 *	method of any registered <code>OSCListener</code>, and must be picked
+	 *	up and handed in to the <code>send</code> method to reply back to the client!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -333,7 +365,7 @@ implements OSCBidi
 	 *	to a client which is not connected will throw an exception.
 	 *	In a future version of NetUtil, there will be an interface
 	 *	to detect clients connecting and disconnecting. For now,
-	 *	clients can be implicitly detected by a registered OSC listener.
+	 *	clients can be implicitly detected by a registered <code>OSCListener</code>.
 	 *
 	 *	@param	p		the packet to send
 	 *	@param	target	the target address to send the packet to
@@ -363,8 +395,10 @@ implements OSCBidi
 	public abstract void removeOSCListener( OSCListener listener );
 
 	/**
-	 *	Starts the server. For <code>TCP</code> mode, this implies that the server becomes
-	 *	attentive to requests for connections from clients.
+	 *	Starts the server. The server becomes
+	 *	attentive to requests for connections from clients,
+	 *	starts to receive OSC messages and is able to reply
+	 *	back to connected clients.
 	 *
 	 *	@throws	IOException	if a networking error occurs
 	 */
@@ -379,7 +413,8 @@ implements OSCBidi
 
 	/**
 	 *	Stops the server. For <code>TCP</code> mode, this implies
-	 *	that all client connections are closed.
+	 *	that all client connections are closed. Stops listening for
+	 *	incoming OSC traffic.
 	 *
 	 *	@throws	IOException	if a networking error occurs
 	 */

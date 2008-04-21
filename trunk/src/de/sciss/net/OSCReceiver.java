@@ -173,6 +173,8 @@ import java.util.List;
  *	@synchronization	starting and stopping and listener registration
  *						is thread safe. starting and stopping listening is thread safe
  *						but must not be carried out in the OSC receiver thread.
+ *	@todo				an explicit disconnect method might be useful
+ *						(this is implicitly done when calling dispose)
  */
 public abstract class OSCReceiver
 implements OSCChannel, Runnable
@@ -215,6 +217,10 @@ implements OSCChannel, Runnable
 	 *	default codec and a specific transport protocol. It picks an arbitrary free port
 	 *	and uses the local machine's IP. To determine the resulting
 	 *	port, you can use <code>getLocalAddress</code> afterwards.
+	 *	<P>
+	 *	<B>TCP</B> receivers are required
+	 *	to be connected to one particular target, so <code>setTarget</code> is
+	 *	must be called prior to <code>connect</code> or <code>startListening</code>! 
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@return				the newly created receiver
@@ -237,6 +243,10 @@ implements OSCChannel, Runnable
 	 *	a specific codec and transport protocol. It picks an arbitrary free port
 	 *	and uses the local machine's IP. To determine the resulting
 	 *	port, you can use <code>getLocalAddress</code> afterwards.
+	 *	<P>
+	 *	<B>TCP</B> receivers are required
+	 *	to be connected to one particular target, so <code>setTarget</code> is
+	 *	must be called prior to <code>connect</code> or <code>startListening</code>! 
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -260,7 +270,15 @@ implements OSCChannel, Runnable
 	/**
 	 *	Creates a new instance of a revivable <code>OSCReceiver</code>, using
 	 *	default codec and a specific transport protocol and port. It
-	 *	uses the local machine's IP.
+	 *	uses the local machine's IP. Note that the <code>port</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. If you want to filter
+	 *	out a particular remote (or target) socket, this can be done
+	 *	using the <code>setTarget</code> method!
+	 *	<P>
+	 *	<B>TCP</B> receivers are required
+	 *	to be connected to one particular target, so <code>setTarget</code> is
+	 *	must be called prior to <code>connect</code> or <code>startListening</code>! 
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
@@ -278,7 +296,15 @@ implements OSCChannel, Runnable
 	/**
 	 *	Creates a new instance of a revivable <code>OSCReceiver</code>, using
 	 *	a specific codec and transport protocol and port. It
-	 *	uses the local machine's IP.
+	 *	uses the local machine's IP. Note that the <code>port</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. If you want to filter
+	 *	out a particular remote (or target) socket, this can be done
+	 *	using the <code>setTarget</code> method!
+	 *	<P>
+	 *	<B>TCP</B> receivers are required
+	 *	to be connected to one particular target, so <code>setTarget</code> is
+	 *	must be called prior to <code>connect</code> or <code>startListening</code>! 
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -300,6 +326,15 @@ implements OSCChannel, Runnable
 	 *	Creates a new instance of a revivable <code>OSCReceiver</code>, using
 	 *	default codec and a specific transport protocol and port. It
 	 *	uses the local machine's IP or the &quot;loopback&quot; address.
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. If you want to filter
+	 *	out a particular remote (or target) socket, this can be done
+	 *	using the <code>setTarget</code> method!
+	 *	<P>
+	 *	<B>TCP</B> receivers are required
+	 *	to be connected to one particular target, so <code>setTarget</code> is
+	 *	must be called prior to <code>connect</code> or <code>startListening</code>! 
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
@@ -322,6 +357,15 @@ implements OSCChannel, Runnable
 	 *	Creates a new instance of a revivable <code>OSCReceiver</code>, using
 	 *	a specific codec and transport protocol and port. It
 	 *	uses the local machine's IP or the &quot;loopback&quot; address.
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. If you want to filter
+	 *	out a particular remote (or target) socket, this can be done
+	 *	using the <code>setTarget</code> method!
+	 *	<P>
+	 *	<B>TCP</B> receivers are required
+	 *	to be connected to one particular target, so <code>setTarget</code> is
+	 *	must be called prior to <code>connect</code> or <code>startListening</code>! 
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -348,6 +392,15 @@ implements OSCChannel, Runnable
 	/**
 	 *	Creates a new instance of a revivable <code>OSCReceiver</code>, using
 	 *	default codec and a specific transport protocol and local socket address.
+	 *	Note that <code>localAdress</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. If you want to filter
+	 *	out a particular remote (or target) socket, this can be done
+	 *	using the <code>setTarget</code> method!
+	 *	<P>
+	 *	<B>TCP</B> receivers are required
+	 *	to be connected to one particular target, so <code>setTarget</code> is
+	 *	must be called prior to <code>connect</code> or <code>startListening</code>! 
 	 *
 	 *	@param	protocol		the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	localAddress	a valid address to use for the OSC socket. If the port is <code>0</code>,
@@ -369,6 +422,15 @@ implements OSCChannel, Runnable
 	/**
 	 *	Creates a new instance of a revivable <code>OSCReceiver</code>, using
 	 *	a specific codec and transport protocol and local socket address.
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. If you want to filter
+	 *	out a particular remote (or target) socket, this can be done
+	 *	using the <code>setTarget</code> method!
+	 *	<P>
+	 *	<B>TCP</B> receivers are required
+	 *	to be connected to one particular target, so <code>setTarget</code> is
+	 *	must be called prior to <code>connect</code> or <code>startListening</code>! 
 	 *
 	 *	@param	c				the codec to use
 	 *	@param	protocol		the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -403,6 +465,11 @@ implements OSCChannel, Runnable
 	 *	default codec and UDP transport on a given channel. The caller should ensure that
 	 *	the provided channel's socket was bound to a valid address
 	 *	(using <code>dch.socket().bind( SocketAddress )</code>).
+	 *	Note that <code>dch</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. If you want to filter
+	 *	out a particular remote (or target) socket, this can be done
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	dch			the <code>DatagramChannel</code> to use as UDP socket.
 	 *	@return				the newly created receiver
@@ -420,6 +487,11 @@ implements OSCChannel, Runnable
 	 *	a specific codec and UDP transport on a given channel. The caller should ensure that
 	 *	the provided channel's socket was bound to a valid address
 	 *	(using <code>dch.socket().bind( SocketAddress )</code>).
+	 *	Note that <code>dch</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. If you want to filter
+	 *	out a particular remote (or target) socket, this can be done
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	dch			the <code>DatagramChannel</code> to use as UDP socket.
@@ -441,7 +513,11 @@ implements OSCChannel, Runnable
 	 *	the provided channel's socket was bound to a valid address
 	 *	(using <code>sch.socket().bind( SocketAddress )</code>). Furthermore,
 	 *	the channel must be connected (using <code>connect()</code>) before
-	 *	being able to receive messages.
+	 *	being able to receive messages. Note that <code>sch</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. The remote (or target)
+	 *	socket must be explicitly specified using <code>setTarget</code> before
+	 *	trying to connect!
 	 *
 	 *	@param	sch			the <code>SocketChannel</code> to use as TCP socket.
 	 *	@return				the newly created receiver
@@ -460,7 +536,11 @@ implements OSCChannel, Runnable
 	 *	the provided channel's socket was bound to a valid address
 	 *	(using <code>sch.socket().bind( SocketAddress )</code>). Furthermore,
 	 *	the channel must be connected (using <code>connect()</code>) before
-	 *	being able to receive messages.
+	 *	being able to receive messages. Note that <code>sch</code> specifies the
+	 *	local socket (at which the receiver listens), it does not determine the
+	 *	remote sockets from which messages can be received. The remote (or target)
+	 *	socket must be explicitly specified using <code>setTarget</code> before
+	 *	trying to connect!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	sch			the <code>SocketChannel</code> to use as TCP socket.
@@ -545,8 +625,11 @@ implements OSCChannel, Runnable
 	 *	connected and unconnected channels are handled.
 	 *	You should never modify the
 	 *	the channel's setup between the constructor and calling
-	 *	<code>startListening</code>, in particular do not
-	 *	connect the channel.
+	 *	<code>startListening</code>. This method will check
+	 *	the connection status of the channel, using <code>isConnected</code>
+	 *	and establish the connection if necessary. Therefore,
+	 *	calling <code>connect</code> prior to <code>startListening</code>
+	 *	is not necessary.
 	 *	<p>
 	 *	To find out at which port we are listening, call
 	 *	<code>getLocalAddress().getPort()</code>.
@@ -555,7 +638,7 @@ implements OSCChannel, Runnable
 	 *	this method does nothing.
      *
      *  @throws IOException when an error occurs
-     *          while disconnecting the datagram channel.
+     *          while establishing the channel connection.
      *          In that case, no thread has been started
      *          and hence stopListening() needn't be called
 	 *
@@ -789,7 +872,44 @@ implements OSCChannel, Runnable
 		}
 	}
 
+	/**
+	 *	Establishes connection for transports requiring
+	 *	connectivity (e.g. TCP). For transports that do not require connectivity (e.g. UDP),
+	 *	this ensures the communication channel is created and bound.
+	 *  <P>
+	 *  Having a connected channel without actually listening to incoming messages
+	 *  is usually not making sense. You can call <code>startListening</code> without
+	 *  explicit prior call to <code>connect</code>, because <code>startListening</code>
+	 *  will establish the connection if necessary.
+	 *  <P>
+	 *	When a <B>UDP</B> transmitter
+	 *	is created without an explicit <code>DatagramChannel</code> &ndash; say by
+	 *	calling <code>OSCReceiver.newUsing( &quot;udp&quot; )</code>, calling
+	 *	<code>connect()</code> will actually create and bind a <code>DatagramChannel</code>.
+	 *	For a <B>UDP</B> receiver which was created with an explicit
+	 *	<code>DatagramChannel</code>. However, for <B>TCP</B> receivers, 
+	 *	this may throw an <code>IOException</code> if the receiver
+	 *	was already connected, therefore be sure to check <code>isConnected()</code> before.
+	 *	
+	 *	@throws	IOException	if a networking error occurs. Possible reasons: - the underlying
+	 *						network channel had been closed by the server. - the transport
+	 *						is TCP and the server is not available.
+	 *
+	 *	@see	#isConnected()
+	 *	@see	#startListening()
+	 *	@throws IOException
+	 */
 	public abstract void connect() throws IOException;
+	
+	/**
+	 *	Queries the connection state of the receiver.
+	 *
+	 *	@return	<code>true</code> if the receiver is connected, <code>false</code> otherwise. For transports that do not use
+	 *			connectivity (e.g. UDP) this returns <code>false</code>, if the
+	 *			underlying <code>DatagramChannel</code> has not yet been created.
+	 *
+	 *	@see	#connect()
+	 */
 	public abstract boolean isConnected();
 
 	// --------------------- internal classes ---------------------

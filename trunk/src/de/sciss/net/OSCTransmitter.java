@@ -73,6 +73,8 @@ import java.nio.channels.SocketChannel;
  *	@see				OSCReceiver
  *
  *	@synchronization	sending messages is thread safe
+ *	@todo				an explicit disconnect method might be useful
+ *						(this is implicitly done when calling dispose)
  */
 public abstract class OSCTransmitter
 implements OSCChannel
@@ -151,7 +153,9 @@ implements OSCChannel
 	/**
 	 *	Creates a new instance of an <code>OSCTransmitter</code>, using
 	 *	default codec and a specific transport protocol and port. It
-	 *	uses the local machine's IP.
+	 *	uses the local machine's IP. Note that the <code>port</code> specifies the
+	 *	local socket, not the remote (or target) port. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
@@ -169,7 +173,9 @@ implements OSCChannel
 	/**
 	 *	Creates a new instance of an <code>OSCTransmitter</code>, using
 	 *	a specific codec and transport protocol and port. It
-	 *	uses the local machine's IP.
+	 *	uses the local machine's IP. Note that the <code>port</code> specifies the
+	 *	local socket, not the remote (or target) port. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -191,6 +197,9 @@ implements OSCChannel
 	 *	Creates a new instance of an <code>OSCTransmitter</code>, using
 	 *	default codec and a specific transport protocol and port. It
 	 *	uses the local machine's IP or the &quot;loopback&quot; address.
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket, not the remote (or target) port. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
@@ -213,6 +222,9 @@ implements OSCChannel
 	 *	Creates a new instance of an <code>OSCTransmitter</code>, using
 	 *	a specific codec and transport protocol and port. It
 	 *	uses the local machine's IP or the &quot;loopback&quot; address.
+	 *	Note that the <code>port</code> specifies the
+	 *	local socket, not the remote (or target) port. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -239,6 +251,9 @@ implements OSCChannel
 	/**
 	 *	Creates a new instance of an <code>OSCTransmitter</code>, using
 	 *	default codec and a specific transport protocol and local socket address.
+	 *	Note that <code>localAddress</code> specifies the
+	 *	local socket, not the remote (or target) socket. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	protocol		the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	localAddress	a valid address to use for the OSC socket. If the port is <code>0</code>,
@@ -260,6 +275,9 @@ implements OSCChannel
 	/**
 	 *	Creates a new instance of an <code>OSCTransmitter</code>, using
 	 *	a specific codec and transport protocol and local socket address.
+	 *	Note that <code>localAddress</code> specifies the
+	 *	local socket, not the remote (or target) socket. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	c				the codec to use
 	 *	@param	protocol		the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
@@ -294,6 +312,9 @@ implements OSCChannel
 	 *	default codec and UDP transport on a given channel. The caller should ensure that
 	 *	the provided channel's socket was bound to a valid address
 	 *	(using <code>dch.socket().bind( SocketAddress )</code>).
+	 *	Note that <code>dch</code> specifies the
+	 *	local socket, not the remote (or target) socket. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	dch			the <code>DatagramChannel</code> to use as UDP socket.
 	 *	@return				the newly created transmitter
@@ -311,6 +332,9 @@ implements OSCChannel
 	 *	a specific codec and UDP transport on a given channel. The caller should ensure that
 	 *	the provided channel's socket was bound to a valid address
 	 *	(using <code>dch.socket().bind( SocketAddress )</code>).
+	 *	Note that <code>dch</code> specifies the
+	 *	local socket, not the remote (or target) socket. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	dch			the <code>DatagramChannel</code> to use as UDP socket.
@@ -333,6 +357,9 @@ implements OSCChannel
 	 *	(using <code>sch.socket().bind( SocketAddress )</code>). Furthermore,
 	 *	the channel must be connected (using <code>connect()</code>) before
 	 *	being able to transmit messages.
+	 *	Note that <code>sch</code> specifies the
+	 *	local socket, not the remote (or target) socket. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	sch			the <code>SocketChannel</code> to use as TCP socket.
 	 *	@return				the newly created transmitter
@@ -352,6 +379,9 @@ implements OSCChannel
 	 *	(using <code>sch.socket().bind( SocketAddress )</code>). Furthermore,
 	 *	the channel must be connected (using <code>connect()</code>) before
 	 *	being able to transmit messages.
+	 *	Note that <code>sch</code> specifies the
+	 *	local socket, not the remote (or target) socket. This can be set
+	 *	using the <code>setTarget</code> method!
 	 *
 	 *	@param	c			the codec to use
 	 *	@param	sch			the <code>SocketChannel</code> to use as TCP socket.
@@ -416,7 +446,16 @@ implements OSCChannel
 	/**
 	 *	Establishes connection for transports requiring
 	 *	connectivity (e.g. TCP). For transports that do not require connectivity (e.g. UDP),
-	 *	this does nothing. This may throw an <code>IOException</code> if the transmitter
+	 *	this ensures the communication channel is created and bound.
+	 *  <P>
+	 *	When a <B>UDP</B> transmitter
+	 *	is created without an explicit <code>DatagramChannel</code> &ndash; say by
+	 *	calling <code>OSCTransmitter.newUsing( &quot;udp&quot; )</code>, you are required
+	 *	to call <code>connect()</code> so that an actual <code>DatagramChannel</code> is
+	 *	created and bound. For a <B>UDP</B> transmitter which was created with an explicit
+	 *	<code>DatagramChannel</code>, this method does noting, so it is always safe
+	 *	to call <code>connect()</code>. However, for <B>TCP</B> transmitters, 
+	 *	this may throw an <code>IOException</code> if the transmitter
 	 *	was already connected, therefore be sure to check <code>isConnected()</code> before.
 	 *	
 	 *	@throws	IOException	if a networking error occurs. Possible reasons: - the underlying
@@ -432,7 +471,8 @@ implements OSCChannel
 	 *	Queries the connection state of the transmitter.
 	 *
 	 *	@return	<code>true</code> if the transmitter is connected, <code>false</code> otherwise. For transports that do not use
-	 *			connectivity (e.g. UDP) this always returns <code>false</code>.
+	 *			connectivity (e.g. UDP) this returns <code>false</code>, if the
+	 *			underlying <code>DatagramChannel</code> has not yet been created.
 	 *
 	 *	@see	#connect()
 	 */
