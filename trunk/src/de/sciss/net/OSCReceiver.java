@@ -67,34 +67,37 @@ import java.util.List;
 
 /**
  *  An <code>OSCReceiver</code> manages reception
- *	of incoming OSC messages. A receiver can be either <B>revivable</B> or <B>non-revivable</B>.
+ *	of incoming OSC messages. A receiver can be either <B>revivable</B> or
+ *	<B>non-revivable</B>.
  *	<UL>
- *	<LI>A non-revivable receiver is bound to one particular network channel (<code>DatagramChannel</code> (for UDP) or <code>SocketChannel</code> (for TCP)).
- *	When the channel is closed, the receiver cannot be restarted. The network channel is closed for example when a TCP server shuts down, but
- *	also when trying to connect to a TCP server that is not yet reachable.</LI>
+ *	<LI>A non-revivable receiver is bound to one particular network channel
+ *	(<code>DatagramChannel</code> (for UDP) or <code>SocketChannel</code> (for TCP)).
+ *	When the channel is closed, the receiver cannot be restarted. The network channel
+ *	is closed for example when a TCP server shuts down, but also when trying to connect
+ *	to a TCP server that is not yet reachable.</LI>
  *	<LI>It is therefore recommended to use revivable receivers. A revivable receiver
- *	is created through one of the <code>newUsing</code> constructors that takes a protocol and address argument. A revivable receiver can be restarted
- *	because it recreates the network channel if necessary.</LI>
+ *	is created through one of the <code>newUsing</code> constructors that takes a
+ *	protocol and address argument. A revivable receiver can be restarted because it
+ *	recreates the network channel if necessary.</LI>
  *	</UL><P>
- *	The receiver launches a listening <code>Thread</code>.
- *  when <code>startListening</code> is called.
+ *	The receiver launches a listening <code>Thread</code> when
+ *	<code>startListening</code> is called.
  *  <p>
- *  The <code>OSCReceiver</code> has methods
- *  for registering and unregistering listeners
- *  that get informed about incoming messages.
- *  Filtering out specific messages must be done by the listeners.
+ *  The <code>OSCReceiver</code> has methods for registering and unregistering listeners
+ *  that get informed about incoming messages. Filtering out specific messages must be
+ *	done by the listeners.
  *  <p>
- *  The listening thread is stopped using
- *  <code>stopListening</code> method.
+ *  The listening thread is stopped using <code>stopListening</code> method.
  *	<P>
- *	<B>Note that as of v0.3,</B> you will most likely want to use preferably one of <code>OSCClient</code> or <code>OSCServer</code>
- *	over <code>OSCReceiver</code>. Also note that as of v0.3, <code>OSCReceiver</code> is abstract, which
- *	renders direct instantiation impossible. <B>To update old code,</B> occurences of <code>new OSCReceiver()</code>
- *	must be replaced by one of the <code>OSCReceiver.newUsing</code> methods! This &quot;filter&quot; functionality
- *	of NetUtil 0.2 is now implied by calling <code>setTarget( SocketAddress )</code>.
+ *	<B>Note that as of v0.3,</B> you will most likely want to use preferably one of
+ *	<code>OSCClient</code> or <code>OSCServer</code> over <code>OSCReceiver</code>.
+ *	Also note that as of v0.3, <code>OSCReceiver</code> is abstract, which renders
+ *	direct instantiation impossible. <B>To update old code,</B> occurrences of
+ *	<code>new OSCReceiver()</code> must be replaced by one of the
+ *	<code>OSCReceiver.newUsing</code> methods! The &quot;filter&quot; functionality of
+ *	NetUtil 0.2 is now implied by calling <code>setTarget( SocketAddress )</code>.
  *	<P>
- *	Here is an example that
- *	also demonstrates message sending using an instance of
+ *	Here is an example that also demonstrates message sending using an instance of
  *	<code>OSCTransmitter</code>:
  *	<pre>
  *      OSCReceiver     rcv     = null;
@@ -105,16 +108,17 @@ import java.util.List;
  *          final SocketAddress addr    = new InetSocketAddress( InetAddress.getLocalHost(), 57110 );
  *          final Object notify         = new Object();
  *          
- *			// note: using constructors with SelectableChannel implies the receivers and
+ *          // note: using constructors with SelectableChannel implies the receivers and
  *          // transmitters cannot be revived. to create revivable channels on the same socket,
- *          // you must use one of OSCClient or OSCServer.
+ *          // you must use one of the newUsing methods that take an IP address and/or port
+ *          // number.
  *          dch     = DatagramChannel.open();
  *          dch.socket().bind( null );	// assigns an automatic local socket address
  *          rcv     = OSCReceiver.newUsing( dch );
  *          trns    = OSCTransmitter.newUsing( dch );
  *
  *          rcv.addOSCListener( new OSCListener() {
- *              public void messageReceived( OSCMessage msg, SocketAddress sender )
+ *              public void messageReceived( OSCMessage msg, SocketAddress sender, long time )
  *              {
  *                  if( msg.getName().equals( "status.reply" )) {
  *                      System.out.println( "scsynth is running. contains " +
@@ -158,10 +162,10 @@ import java.util.List;
  *	as shown in the example above.
  *	<P>
  *	Note that someone has reported trouble with the <code>InetAddress.getLocalHost()</code> method
- *	on a machine that has no proper IP configuration or DNS problems. In such a case when you need
- *	to communicate only on this machine and not a network, use the loopback address &quot;127.0.0.1&quot;
- *	as the filtering address or bind the socket to the loop address manually
- *	before calling <code>new OSCReceiver()</code>.
+ *	on a machine that has no proper IP configuration or DNS problems. In such a case when
+ *	you need to communicate only on this machine and not a network, use the loopback
+ *	address &quot;127.0.0.1&quot; as the filtering address or bind the socket to the loop
+ *	address manually before calling <code>new OSCReceiver()</code>.
  *
  *  @author		Hanns Holger Rutz
  *  @version	0.33, 25-Feb-08
