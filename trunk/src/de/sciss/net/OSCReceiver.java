@@ -168,7 +168,7 @@ import java.util.List;
  *	address manually before calling <code>new OSCReceiver()</code>.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 25-Feb-08
+ *  @version	0.35, 30-Jun-08
  *
  *	@see				OSCClient
  *	@see				OSCServer
@@ -483,7 +483,7 @@ implements OSCChannel, Runnable
 	public static OSCReceiver newUsing( DatagramChannel dch )
 	throws IOException
 	{
-		return newUsing( dch );
+		return newUsing( OSCPacketCodec.getDefaultCodec(), dch );
 	}
 
 	/**

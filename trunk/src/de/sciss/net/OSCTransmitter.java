@@ -787,6 +787,7 @@ implements OSCChannel
 			if( sch != null ) {
 				try {
 //System.err.println( "TCPOSCTransmitter.closeChannel()" );
+//new IOException( "TCPOSCTransmitter.closeChannel()" ).printStackTrace();
 					sch.close();
 //System.err.println( "... ok " );
 				}
