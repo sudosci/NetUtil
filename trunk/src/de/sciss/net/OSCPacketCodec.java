@@ -63,9 +63,9 @@ import java.nio.ByteBuffer;
  *	OSC typetags, without the need to subclass <code>OSCPacketCodec</code>.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.34, 15-Apr-08
+ *  @version	0.35, 07-May-08
  *
- *	@since		NetUtil 0.33
+ *	@since		NetUtil 0.35
  */
 public class OSCPacketCodec
 {
@@ -814,7 +814,7 @@ public class OSCPacketCodec
 	 *	@see	OSCPacketCodec#putDecoder( byte, de.sciss.net.OSCPacketCodec.Atom )
 	 *	@see	OSCPacketCodec#putEncoder( java.lang.Class, de.sciss.net.OSCPacketCodec.Atom ) 
 	 */
-	public abstract class Atom
+	public static abstract class Atom
 	{
 		public abstract Object decodeAtom( byte typeTag, ByteBuffer b ) throws IOException;
 		public abstract void encodeAtom( Object o, ByteBuffer tb, ByteBuffer db ) throws IOException;
