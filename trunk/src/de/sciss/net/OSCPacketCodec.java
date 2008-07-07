@@ -682,7 +682,7 @@ public class OSCPacketCodec
 	 *  @throws BufferUnderflowException	in case the string exceeds
 	 *										the provided buffer limit
 	 */
-	protected static String readString( ByteBuffer b )
+	public static String readString( ByteBuffer b )
 	{
 		final int		pos = b.position();
 		final byte[]	bytes;
@@ -707,7 +707,7 @@ public class OSCPacketCodec
 	 *  @throws BufferOverflowException		in case the padding exceeds
 	 *										the provided buffer limit
 	 */
-	protected static void terminateAndPadToAlign( ByteBuffer b )
+	public static void terminateAndPadToAlign( ByteBuffer b )
 	{
 		b.put( pad, 0, 4 - (b.position() & 0x03) );
 	}
@@ -723,7 +723,7 @@ public class OSCPacketCodec
 	 *  @throws BufferOverflowException		in case the padding exceeds
 	 *										the provided buffer limit
 	 */
-	protected static void padToAlign( ByteBuffer b )
+	public static void padToAlign( ByteBuffer b )
 	{
 		b.put( pad, 0, -b.position() & 0x03 );  // nearest 4-align
 	}
@@ -740,7 +740,7 @@ public class OSCPacketCodec
 	 *  @throws IllegalArgumentException	in case the skipping exceeds
 	 *										the provided buffer limit
 	 */
-	protected static void skipToValues( ByteBuffer b )
+	public static void skipToValues( ByteBuffer b )
 	throws BufferUnderflowException
 	{
 		while( b.get() != 0x00 ) ;
@@ -758,7 +758,7 @@ public class OSCPacketCodec
 	 *  @throws IllegalArgumentException	in case the skipping exceeds
 	 *										the provided buffer limit
 	 */
-	protected static void skipToAlign( ByteBuffer b )
+	public static void skipToAlign( ByteBuffer b )
 	{
         b.position( (b.position() + 3) & ~3 );
 	}
