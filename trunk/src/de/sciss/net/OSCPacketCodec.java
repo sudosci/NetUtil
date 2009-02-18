@@ -63,7 +63,7 @@ import java.nio.ByteBuffer;
  *	OSC typetags, without the need to subclass <code>OSCPacketCodec</code>.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.35, 07-May-08
+ *  @version	0.36, 18-Feb-09
  *
  *	@since		NetUtil 0.35
  */
@@ -642,7 +642,7 @@ public class OSCPacketCodec
 		final ByteBuffer	b2;
 //		int					pos1, pos2;
 		int					j;
-		Object				o;
+		Object				o		= null;
 		Class				cl		= null;
 //		Class				oldCl	= null;
 		Atom				a		= null;
@@ -666,7 +666,7 @@ public class OSCPacketCodec
 			}
 		}
 		catch( NullPointerException e1 ) {
-			throw new OSCException( OSCException.JAVACLASS, cl == null ? "null" : cl.getName() );
+			throw new OSCException( OSCException.JAVACLASS, o == null ? "null" : cl.getName() );
 		}
 		terminateAndPadToAlign( b2 );
 	}
