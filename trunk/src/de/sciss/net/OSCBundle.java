@@ -295,7 +295,7 @@ extends OSCPacket
 		timetag						= (secsSince1900 << 32) | secsFractional;
 	}
 	
-	public void setTimeTagRow( long raw )
+	public void setTimeTagRaw( long raw )
 	{
 		timetag = raw;
 	}

@@ -66,7 +66,7 @@ import java.nio.channels.SocketChannel;
  *	to the special address &quot;127.0.0.1&quot; (called &quot;loopback&quot;).
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 25-Feb-08
+ *  @version	0.33, 05-Mar-09
  *
  *	@see				OSCClient
  *	@see				OSCServer
@@ -581,8 +581,9 @@ implements OSCChannel
 	// @synchronization	caller must ensure synchronization
 	protected void checkBuffer()
 	{
-		if( (byteBuf == null) || (byteBuf.capacity() != bufSize) ) {
-			byteBuf	= ByteBuffer.allocateDirect( bufSize );
+		if( allocBuf ) {
+			byteBuf		= ByteBuffer.allocateDirect( bufSize );
+			allocBuf	= false;
 		}
 	}
 	

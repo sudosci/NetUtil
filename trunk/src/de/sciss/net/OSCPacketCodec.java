@@ -520,7 +520,7 @@ public class OSCPacketCodec
 		final OSCBundle	bndl        = new OSCBundle();
 		final int		totalLimit  = b.limit();
 
-		bndl.setTimeTagRow( b.getLong() );
+		bndl.setTimeTagRaw( b.getLong() );
 
 		try {
 			while( b.hasRemaining() ) {
@@ -568,7 +568,7 @@ public class OSCPacketCodec
 		final ByteBuffer	b2;
 		final int			pos1;
 //		int					pos1, pos2;
-		byte				type	= 0;
+		byte				typ	= 0;
 		
 		if( b.get() != 0x2C ) throw new OSCException( OSCException.FORMAT, null );
 		b2		= b.slice();	// faster to slice than to reposition all the time!
@@ -584,17 +584,12 @@ public class OSCPacketCodec
 	
 		try {
 			for( int argIdx = 0; argIdx < numArgs; argIdx++ ) {
-//				b.position( pos1++ );
-				type = b2.get();
-//				b.position( pos2 );
-				if( type == 0 ) break;
-//				args.add( atomDecoders[ type ].decode( type, b ));
-				args[ argIdx ] = atomDecoders[ type ].decodeAtom( type, b );
-//System.err.println( "type = " + type + "; args[ " + argIdx + " ] = " + args[ argIdx ]);
-//				pos2 = b.position();
+				typ = b2.get();
+//				if( typ == 0 ) break;
+				args[ argIdx ] = atomDecoders[ typ ].decodeAtom( typ, b );
 			}
 		} catch (NullPointerException e1 ) {
-			throw new OSCException( OSCException.TYPETAG, String.valueOf( (char) type ));
+			throw new OSCException( OSCException.TYPETAG, String.valueOf( (char) typ ));
 		}
 //System.err.println( "done. numArgs = "+args.length );
 		return new OSCMessage( command, args );
@@ -686,8 +681,9 @@ public class OSCPacketCodec
 	{
 		final int		pos = b.position();
 		final byte[]	bytes;
-		int len = 1;
-		while( b.get() != 0 ) len++;
+//		int len = 1;
+		while( b.get() != 0 ) ; // len++;
+		final int len = b.position() - pos;
 		bytes = new byte[ len ];
 		b.position( pos );
 		b.get( bytes );

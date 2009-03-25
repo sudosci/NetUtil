@@ -168,7 +168,7 @@ import java.util.List;
  *	address manually before calling <code>new OSCReceiver()</code>.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.35, 30-Jun-08
+ *  @version	0.35, 12-Mar-09
  *
  *	@see				OSCClient
  *	@see				OSCServer
@@ -196,6 +196,7 @@ implements OSCChannel, Runnable
 	private final Object				bufSync			= new Object();	// buffer (re)allocation
 	private int							bufSize			= DEFAULTBUFSIZE;
 	protected ByteBuffer				byteBuf			= null;
+	protected boolean					allocBuf		= true;
 
     private int							dumpMode		= kDumpOff;
 	private PrintStream					printStream		= null;
@@ -531,7 +532,7 @@ implements OSCChannel, Runnable
 	public static OSCReceiver newUsing( SocketChannel sch )
 	throws IOException
 	{
-		return newUsing( sch );
+		return newUsing( OSCPacketCodec.getDefaultCodec(), sch );
 	}
 
 	/**
@@ -736,9 +737,12 @@ implements OSCChannel, Runnable
 
 	public void setBufferSize( int size )
 	{
-		synchronized( generalSync ) {
+		synchronized( bufSync ) {
 			if( isListening ) throw new IllegalStateException( NetUtil.getResourceString( "errNotWhileActive" ));
-			bufSize		= size;
+			if( bufSize != size ) {
+				bufSize		= size;
+				allocBuf	= true;
+			}
 		}
 	}
 
@@ -869,10 +873,10 @@ implements OSCChannel, Runnable
 	protected void checkBuffer()
 	{
 		synchronized( bufSync ) {
-			if( (byteBuf == null) || (byteBuf.capacity() != bufSize) ) {
+			if( allocBuf ) {
 				byteBuf	= ByteBuffer.allocateDirect( bufSize );
+				allocBuf = false;
 			}
-//			allocBuf = false;
 		}
 	}
 
