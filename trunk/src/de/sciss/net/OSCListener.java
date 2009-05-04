@@ -33,7 +33,6 @@
 
 package de.sciss.net;
 
-import java.awt.EventQueue;	// only for javadoc
 import java.net.SocketAddress;
 
 /**
@@ -57,7 +56,7 @@ import java.net.SocketAddress;
  *  @version	0.24, 11-Sep-05
  *
  *  @see	OSCReceiver
- *	@see	EventQueue#invokeLater( Runnable )
+ *	@see	java.awt.EventQueue#invokeLater( Runnable )
  */
 public interface OSCListener
 {
