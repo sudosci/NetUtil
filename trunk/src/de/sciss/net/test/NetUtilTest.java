@@ -329,7 +329,7 @@ public abstract class NetUtilTest
 	}
 
 	/**
-	 *	Creates two receivers and two transmitters, of of each
+	 *	Creates two receivers and two transmitters, one of each
 	 *	being restricted to loopback. Sends from each transmitter
 	 *	to each receiver. The expected result is that all messages
 	 *	arrive except those sent from the local host transmitter

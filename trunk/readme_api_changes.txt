@@ -87,7 +87,16 @@ API changes from v0.32 to v0.33
 		the corresponding encode() and decode() methods. A possible conversion approach
 		you can find in SwingOSC v0.53+'s ScopeView and OSCSharedBufSetNMsg classes.
 
+API changes from v0.36 to v0.35
+- OSCReceiver binds to IP "0.0.0.0" instead of InetAddress.getLocalHost() when loopBack is false.
+  This allows sockets bound to loopback to send to those receivers, too.
+	- changes in OSCChannel
+		getLocalAddress now throws an IOException. In order to prevent problems with
+		returning "0.0.0.0", in such case InetAddress.getLocalHost() is returned which is
+		most likely the desired result, besides staying mostly backwards compatible.
+		getLocalHost() may throw however the IOException (UnknownHostException).
+
 ---
 
 
-lastmod: 02-jul-07 sciss
+lastmod: 06-may-09 sciss

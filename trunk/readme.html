@@ -74,11 +74,11 @@ TD.when {
 </HEAD>
 <BODY>
 <h1>
-NetUtil <small>-- version 0.35 (built 21-apr-08) --</small>
+NetUtil <small>-- version 0.36 (built 06-may-09) --</small>
 </h1>
 <h3>statement</h3>
 <p>
-NetUtil is a compact and efficient java library for sending and receiving messages using the OpenSoundControl protocol. It is (C)opyright 2004&ndash;2008 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the <A HREF="licenses/NetUtil-License.txt">GNU Lesser General Public License</A> and comes with absolutely no warranties. To contact the author, send an email to <code>contact&nbsp;at&nbsp;sciss.de</code>
+NetUtil is a compact and efficient java library for sending and receiving messages using the OpenSoundControl protocol. It is (C)opyright 2004&ndash;2009 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the <A HREF="licenses/NetUtil-License.txt">GNU Lesser General Public License</A> and comes with absolutely no warranties. To contact the author, send an email to <code>contact&nbsp;at&nbsp;sciss.de</code>
 </p>
 <p>
 For project status, API and current version, visit <a href="http://www.sciss.de/netutil/" TARGET="_blank" CLASS="ext">www.sciss.de/netutil</a>.
@@ -147,6 +147,14 @@ to-do / known issues
 <LI>add helper classes (multi-server wrapper, message deferrer)</LI>
 </UL>
 <h3>change history</h3>
+<h4>v0.36 (may 2009 - SVN rev. 16)</h4>
+<UL>
+<LI>Fixed bug in OSCReceiver.newUsing( DatagramChannel )</LI>
+<LI>Increased OSCPacketCodec.Atom visibility</LI>
+<LI>Fixed confusing error message with null OSC message arguments</LI>
+<LI>Fixed typo: OSCBundle.setTimeTagRow becomes setTimeTagRaw</LI>
+<LI>OSCReceiver creation: socket's IP defaults to "0.0.0.0" now instead of InetAddress.getLocalHost(), since this way messages both from localhost and loopback sockets are received.</LI>
+</UL>
 <h4>v0.35 (apr 2008 - SVN rev. 6)</h4>
 <UL>
 <LI>Improved and fixed javadoc comments for OSCTransmitter, OSCReceiver, OSCClient, OSCServer</LI>
