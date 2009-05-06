@@ -2,7 +2,7 @@
  *  OSCClient.java
  *  de.sciss.net (NetUtil)
  *
- *  Copyright (c) 2004-2008 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2004-2009 Hanns Holger Rutz. All rights reserved.
  *
  *	This library is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU Lesser General Public
@@ -320,6 +320,7 @@ implements OSCBidi
 	 *									the currently supported transports <code>UDP</code> and <code>TCP</code>
 	 *									both use an <code>InetSocketAddress</code>, but there might be other
 	 *									addtional protocols in future versions.
+	 *	@throws	IOException	if the local host could not be resolved
 	 *
 	 *	@see	java.net.InetSocketAddress#getHostName()
 	 *	@see	java.net.InetSocketAddress#getAddress()
@@ -328,6 +329,7 @@ implements OSCBidi
 	 *	@see	#getProtocol()
 	 */
 	public InetSocketAddress getLocalAddress()
+	throws IOException
 	{
 		return rcv.getLocalAddress();
 	}

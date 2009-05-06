@@ -2,7 +2,7 @@
  *  OSCReceiver.java
  *  de.sciss.net (NetUtil)
  *
- *  Copyright (c) 2004-2008 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2004-2009 Hanns Holger Rutz. All rights reserved.
  *
  *	This library is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU Lesser General Public
@@ -54,6 +54,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AlreadyConnectedException;
@@ -389,8 +390,9 @@ implements OSCChannel, Runnable
 	public static OSCReceiver newUsing( OSCPacketCodec c, String protocol, int port, boolean loopBack )
 	throws IOException
 	{
-		final InetSocketAddress localAddress = loopBack ? new InetSocketAddress( "127.0.0.1", port ) :
-														  new InetSocketAddress( InetAddress.getLocalHost(), port );
+//		final InetSocketAddress localAddress = loopBack ? new InetSocketAddress( "127.0.0.1", port ) :
+//			  new InetSocketAddress( InetAddress.getLocalHost(), port );
+		final InetSocketAddress localAddress = new InetSocketAddress( loopBack ? "127.0.0.1" : "0.0.0.0", port );
 		return newUsing( c, protocol, localAddress );
 	}
 
@@ -576,12 +578,14 @@ implements OSCChannel, Runnable
 	 *	method after the receiver has been started.
 	 *	
 	 *	@return				the address of the receiver's local socket.
+	 *	@throws	IOException	if the local host could not be resolved
 	 *
 	 *	@see	java.net.InetSocketAddress#getHostName()
 	 *	@see	java.net.InetSocketAddress#getAddress()
 	 *	@see	java.net.InetSocketAddress#getPort()
+	 *
 	 */
-	public abstract InetSocketAddress getLocalAddress();
+	public abstract InetSocketAddress getLocalAddress() throws IOException;
 
 	public abstract void setTarget( SocketAddress target );
 	
@@ -880,6 +884,12 @@ implements OSCChannel, Runnable
 		}
 	}
 
+	protected InetSocketAddress getLocalAddress( InetAddress addr, int port )
+	throws UnknownHostException
+	{
+		return new InetSocketAddress( addr.getHostName().equals( "0.0.0.0" ) ? InetAddress.getLocalHost() : addr, port );
+	}
+
 	/**
 	 *	Establishes connection for transports requiring
 	 *	connectivity (e.g. TCP). For transports that do not require connectivity (e.g. UDP),
@@ -956,13 +966,14 @@ implements OSCChannel, Runnable
 		}
 		
 		public InetSocketAddress getLocalAddress()
+		throws IOException
 		{
 			synchronized( generalSync ) {
 				if( dch != null ) {
 					final DatagramSocket ds = dch.socket();
-					return new InetSocketAddress( ds.getLocalAddress(), ds.getLocalPort() );
+					return getLocalAddress( ds.getLocalAddress(), ds.getLocalPort() );
 				} else {
-					return localAddress;
+					return getLocalAddress( localAddress.getAddress(), localAddress.getPort() );
 				}
 			}
 		}
@@ -1064,7 +1075,7 @@ listen:			while( isListening )
 			
 			guard		= new DatagramSocket();
 			guardPacket	= new DatagramPacket( new byte[0], 0 );
-			guardPacket.setSocketAddress( dch.socket().getLocalSocketAddress() );
+			guardPacket.setSocketAddress( getLocalAddress() );
 			guard.send( guardPacket );
 			guard.close();
 		}
@@ -1101,13 +1112,14 @@ listen:			while( isListening )
 		}
 
 		public InetSocketAddress getLocalAddress()
+		throws IOException
 		{
 			synchronized( generalSync ) {
 				if( sch != null ) {
 					final Socket s = sch.socket();
-					return new InetSocketAddress( s.getLocalAddress(), s.getLocalPort() );
+					return getLocalAddress( s.getLocalAddress(), s.getLocalPort() );
 				} else {
-					return localAddress;
+					return getLocalAddress( localAddress.getAddress(), localAddress.getPort() );
 				}
 			}
 		}

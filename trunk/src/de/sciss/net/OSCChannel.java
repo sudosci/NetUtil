@@ -2,7 +2,7 @@
  *  OSCChannel.java
  *  de.sciss.net (NetUtil)
  *
- *  Copyright (c) 2004-2008 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2004-2009 Hanns Holger Rutz. All rights reserved.
  *
  *	This library is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU Lesser General Public
@@ -31,6 +31,7 @@
 
 package de.sciss.net;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetSocketAddress;
 
@@ -111,6 +112,7 @@ public interface OSCChannel
 	 *	and <code>getPort()</code>.
 	 *	
 	 *	@return				the address of the communicator's local socket.
+	 *	@throws	IOException	if the local host could not be resolved
 	 *
 	 *	@see	java.net.InetSocketAddress#getHostName()
 	 *	@see	java.net.InetSocketAddress#getAddress()
@@ -118,7 +120,7 @@ public interface OSCChannel
 	 *
 	 *	@see	#getProtocol()
 	 */
-	public InetSocketAddress getLocalAddress();
+	public InetSocketAddress getLocalAddress() throws IOException;
 	
 	/**
 	 *	Adjusts the buffer size for OSC messages.

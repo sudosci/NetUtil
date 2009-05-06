@@ -2,7 +2,7 @@
  *  NetUtil.java
  *  de.sciss.net (NetUtil)
  *
- *  Copyright (c) 2004-2008 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2004-2009 Hanns Holger Rutz. All rights reserved.
  *
  *	This library is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU Lesser General Public
@@ -40,11 +40,11 @@ import de.sciss.net.test.NetUtilTest;
  *	more useful utility methods.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.35, 21-Apr-08
+ *  @version	0.36, 06-May-09
  */
 public class NetUtil
 {
-	private static final double VERSION	= 0.35;
+	private static final double VERSION	= 0.36;
 	private static final ResourceBundle resBundle = ResourceBundle.getBundle( "NetUtilStrings" );
 
     private NetUtil() { /* empty */ }
@@ -75,6 +75,9 @@ public class NetUtil
 			} else if( args[ 0 ].equals( "--testCodecSpeed" )) {
 				testo	= true;
 				NetUtilTest.codecSpeed();
+			} else if( args[ 0 ].equals( "--testPingPong" )) {
+				testo	= true;
+				NetUtilTest.pingPong();
 			}
 		}
 
@@ -87,9 +90,10 @@ public class NetUtil
 			System.out.println( "\nThe following demos are available:\n" +
 				"  --testTCPClient\n" +
 				"  --testUDPClient\n" +
+				"  --testTCPServer\n" +
 				"  --testUDPServer\n" +
-				"  --testUDPServer\n" +
-				"  --testCodecSpeed\n"
+				"  --testCodecSpeed\n" +
+				"  --testPingPong\n"
 			);
 			System.exit( 1 );
 		}

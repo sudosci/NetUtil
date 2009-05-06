@@ -2,7 +2,7 @@
  *  OSCServer.java
  *  de.sciss.net (NetUtil)
  *
- *  Copyright (c) 2004-2008 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2004-2009 Hanns Holger Rutz. All rights reserved.
  *
  *	This library is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU Lesser General Public
@@ -356,7 +356,7 @@ implements OSCBidi
 		return protocol;
 	}
 
-	public abstract InetSocketAddress getLocalAddress();
+	public abstract InetSocketAddress getLocalAddress() throws IOException;
 
 	/**
 	 *	Sends an OSC packet (bundle or message) to the given
@@ -495,6 +495,7 @@ implements OSCBidi
 		}
 		
 		public InetSocketAddress getLocalAddress()
+		throws IOException
 		{
 			return rcv.getLocalAddress();
 		}

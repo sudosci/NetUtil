@@ -2,7 +2,7 @@
  *  NetUtilTest.java
  *  de.sciss.net (NetUtil)
  *
- *  Copyright (c) 2004-2008 Hanns Holger Rutz. All rights reserved.
+ *  Copyright (c) 2004-2009 Hanns Holger Rutz. All rights reserved.
  *
  *	This library is free software; you can redistribute it and/or
  *	modify it under the terms of the GNU Lesser General Public
@@ -43,6 +43,8 @@ import de.sciss.net.OSCChannel;
 import de.sciss.net.OSCClient;
 import de.sciss.net.OSCListener;
 import de.sciss.net.OSCMessage;
+import de.sciss.net.OSCReceiver;
+import de.sciss.net.OSCTransmitter;
 //import de.sciss.net.OSCPacketCodec;
 import de.sciss.net.OSCServer;
 
@@ -326,6 +328,48 @@ public abstract class NetUtilTest
 		catch( IOException e1 ) { e1.printStackTrace(); }
 	}
 
+	/**
+	 *	Creates two receivers and two transmitters, of of each
+	 *	being restricted to loopback. Sends from each transmitter
+	 *	to each receiver. The expected result is that all messages
+	 *	arrive except those sent from the local host transmitter
+	 *	to loopback receiver (trns2 to rcv1, i.e. "five", "six").
+	 */
+	public static void pingPong()
+	{
+		try {
+			final OSCReceiver		rcv1	= OSCReceiver.newUsing( OSCChannel.UDP, 0, true );
+			final OSCReceiver		rcv2	= OSCReceiver.newUsing( OSCChannel.UDP, 0, false);
+			final OSCTransmitter	trns1	= OSCTransmitter.newUsing( OSCChannel.UDP, 0, true );
+			final OSCTransmitter	trns2	= OSCTransmitter.newUsing( OSCChannel.UDP, 0, false );
+		
+			rcv1.dumpOSC( OSCChannel.kDumpText, System.out );
+			rcv1.startListening();
+			rcv2.dumpOSC( OSCChannel.kDumpText, System.out );
+			rcv2.startListening();
+			
+			trns1.connect();
+			trns1.setTarget( new InetSocketAddress( "127.0.0.1", rcv1.getLocalAddress().getPort() ));
+			trns1.send( new OSCMessage( "/test", new Object[] { "one", "two" }));
+			trns1.setTarget( new InetSocketAddress( "127.0.0.1", rcv2.getLocalAddress().getPort() ));
+			trns1.send( new OSCMessage( "/test", new Object[] { "three", "four" }));
+			
+			trns2.connect();
+			trns2.setTarget( new InetSocketAddress( InetAddress.getLocalHost(), rcv1.getLocalAddress().getPort() ));
+			trns2.send( new OSCMessage( "/test", new Object[] { "five", "six" }));
+			trns2.setTarget( new InetSocketAddress( InetAddress.getLocalHost(), rcv2.getLocalAddress().getPort() ));
+			trns2.send( new OSCMessage( "/test", new Object[] { "seven", "eight" }));
+			
+			try { Thread.sleep( 2000 ); } catch( InterruptedException e1 ) { /* ignore */ }
+			
+			rcv1.dispose();
+			rcv2.dispose();
+			trns1.dispose();
+			trns2.dispose();
+		}
+		catch( IOException e1 ) { e1.printStackTrace(); }
+	}
+	
 	protected static void postln( String s )
 	{
 		System.err.println( s );
