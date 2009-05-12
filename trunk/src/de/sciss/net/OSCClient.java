@@ -123,7 +123,7 @@ import java.net.SocketAddress;
  *	@see		OSCServer
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 25-Feb-08
+ *  @version	0.37, 12-May-09
  *
  *	@since		NetUtil 0.30
  */
@@ -253,9 +253,10 @@ implements OSCBidi
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
-	 *	@param	loopBack	if <code>true</code>, the &quot;loopback&quot; address (<code>&quot;127.0.0.0.1&quot;</code>)
+	 *	@param	loopBack	if <code>true</code>, the &quot;loopback&quot; address (<code>&quot;127.0.0.1&quot;</code>)
 	 *						is used which limits communication to the local machine. If <code>false</code>, the
-	 *						local machine's regular IP address is used.
+	 *						special IP <code>"0.0.0.0"</code> is used which means messages from any IP as well as from
+	 *						the loopback are accepted
 	 *	
 	 *	@return				the newly created client
 	 *
@@ -282,9 +283,10 @@ implements OSCBidi
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
-	 *	@param	loopBack	if <code>true</code>, the &quot;loopback&quot; address (<code>&quot;127.0.0.0.1&quot;</code>)
+	 *	@param	loopBack	if <code>true</code>, the &quot;loopback&quot; address (<code>&quot;127.0.0.1&quot;</code>)
 	 *						is used which limits communication to the local machine. If <code>false</code>, the
-	 *						local machine's regular IP address is used.
+	 *						special IP <code>"0.0.0.0"</code> is used which means messages from any IP as well as from
+	 *						the loopback are accepted
 	 *	
 	 *	@return				the newly created client
 	 *
@@ -313,13 +315,14 @@ implements OSCBidi
 	 *	You can determine the host and port from the returned address
 	 *	by calling <code>getHostName()</code> (or for the IP <code>getAddress().getHostAddress()</code>)
 	 *	and <code>getPort()</code>.
+	 *	<p>
+	 *	Note that if the client is bound to the accept-any IP <code>"0.0.0.0"</code>,
+	 *	which happens for example when calling <code>newUsing( &lt;protocol&gt;, 0, false )</code>,
+	 *	the returned IP will be the localhost's IP, so you can
+	 *	patch the result directly into any <code>setTarget</code> call.
 	 *	
 	 *	@return				the address of the client's local socket.
 	 *
-	 *	@throws	IllegalStateException	if the used transport doesn't use an <code>InetSocketAddress</code>.
-	 *									the currently supported transports <code>UDP</code> and <code>TCP</code>
-	 *									both use an <code>InetSocketAddress</code>, but there might be other
-	 *									addtional protocols in future versions.
 	 *	@throws	IOException	if the local host could not be resolved
 	 *
 	 *	@see	java.net.InetSocketAddress#getHostName()

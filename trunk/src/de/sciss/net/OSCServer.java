@@ -34,7 +34,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NotYetConnectedException;
 import java.nio.channels.ServerSocketChannel;
@@ -156,7 +158,7 @@ import java.util.Map;
  *	@see		OSCClient
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 02-Jul-07
+ *  @version	0.37, 12-May-09
  *
  *	@since		NetUtil 0.30
  *
@@ -292,9 +294,10 @@ implements OSCBidi
 	 *
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
-	 *	@param	loopBack	if <code>true</code>, the &quot;loopback&quot; address (<code>&quot;127.0.0.0.1&quot;</code>)
+	 *	@param	loopBack	if <code>true</code>, the &quot;loopback&quot; address (<code>&quot;127.0.0.1&quot;</code>)
 	 *						is used which limits communication to the local machine. If <code>false</code>, the
-	 *						local machine's regular IP address is used.
+	 *						special IP <code>"0.0.0.0"</code> is used which means messages from any IP as well as from
+	 *						the loopback are accepted
 	 *	
 	 *	@return				the newly created server
 	 *
@@ -323,9 +326,10 @@ implements OSCBidi
 	 *	@param	c			the codec to use
 	 *	@param	protocol	the protocol to use, currently either <code>UDP</code> or <code>TCP</code>
 	 *	@param	port		the port number for the OSC socket, or <code>0</code> to use an arbitrary free port
-	 *	@param	loopBack	if <code>true</code>, the &quot;loopback&quot; address (<code>&quot;127.0.0.0.1&quot;</code>)
+	 *	@param	loopBack	if <code>true</code>, the &quot;loopback&quot; address (<code>&quot;127.0.0.1&quot;</code>)
 	 *						is used which limits communication to the local machine. If <code>false</code>, the
-	 *						local machine's regular IP address is used.
+	 *						special IP <code>"0.0.0.0"</code> is used which means messages from any IP as well as from
+	 *						the loopback are accepted
 	 *	
 	 *	@return				the newly created server
 	 *
@@ -337,8 +341,9 @@ implements OSCBidi
 	public static OSCServer newUsing( OSCPacketCodec c, String protocol, int port, boolean loopBack )
 	throws IOException
 	{
-		final InetSocketAddress localAddress = loopBack ? new InetSocketAddress( "127.0.0.1", port ) :
-														  new InetSocketAddress( InetAddress.getLocalHost(), port );
+//		final InetSocketAddress localAddress = loopBack ? new InetSocketAddress( "127.0.0.1", port ) :
+//														  new InetSocketAddress( InetAddress.getLocalHost(), port );
+		final InetSocketAddress localAddress = new InetSocketAddress( loopBack ? "127.0.0.1" : "0.0.0.0", port );
 	
 		if( protocol.equals( UDP )) {
 			return new UDPOSCServer( c, localAddress );
@@ -356,6 +361,29 @@ implements OSCBidi
 		return protocol;
 	}
 
+	/**
+	 *	Queries the server socket's address. This is the address
+	 *	at which the server accepts connections (when using TCP)
+	 *	or receives and sends messages (when using UDP).
+	 *	You can determine the host and port from the returned address
+	 *	by calling <code>getHostName()</code> (or for the IP <code>getAddress().getHostAddress()</code>)
+	 *	and <code>getPort()</code>.
+	 *	<p>
+	 *	Note that if the server is bound to the accept-any IP <code>"0.0.0.0"</code>,
+	 *	which happens for example when calling <code>newUsing( &lt;protocol&gt;, 0, false )</code>,
+	 *	the returned IP will be the localhost's IP, so you can
+	 *	patch the result directly into any <code>setTarget</code> call.
+	 *	
+	 *	@return				the address of the server's local socket.
+	 *
+	 *	@throws	IOException	if the local host could not be resolved
+	 *
+	 *	@see	java.net.InetSocketAddress#getHostName()
+	 *	@see	java.net.InetSocketAddress#getAddress()
+	 *	@see	java.net.InetSocketAddress#getPort()
+	 *
+	 *	@see	#getProtocol()
+	 */
 	public abstract InetSocketAddress getLocalAddress() throws IOException;
 
 	/**
@@ -476,6 +504,12 @@ implements OSCBidi
 	 *	Do not use this server instance any more after calling <code>dispose.</code>
 	 */
 	public abstract void dispose();
+
+	protected InetSocketAddress getLocalAddress( InetAddress addr, int port )
+	throws UnknownHostException
+	{
+		return new InetSocketAddress( addr.getHostName().equals( "0.0.0.0" ) ? InetAddress.getLocalHost() : addr, port );
+	}
 
 	private static class UDPOSCServer
 	extends OSCServer
@@ -611,7 +645,7 @@ implements OSCBidi
 		private PrintStream					inStream		= null;
 		private PrintStream					outStream		= null;
 		
-		private final InetSocketAddress		localAddress;
+//		private final InetSocketAddress		localAddress;
 		private final ServerSocketChannel	ssch;
 		
 		protected TCPOSCServer( OSCPacketCodec c, InetSocketAddress localAddress )
@@ -619,15 +653,18 @@ implements OSCBidi
 		{
 			super( c, TCP );
 			
-			this.localAddress	= localAddress;
+//			this.localAddress	= localAddress;
 			ssch				= ServerSocketChannel.open();
 			ssch.socket().bind( localAddress );
 		}
 
 		public InetSocketAddress getLocalAddress()
+		throws IOException
 		{
+			final ServerSocket ss = ssch.socket();
+			return getLocalAddress( ss.getInetAddress(), ss.getLocalPort() );
 //			return new InetSocketAddress( ssch.socket().getInetAddress(), ssch.socket().getLocalPort() );
-			return localAddress;
+//			return localAddress;
 		}
 
 		public void addOSCListener( OSCListener listener )

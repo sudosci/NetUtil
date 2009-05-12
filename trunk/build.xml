@@ -10,7 +10,7 @@
 	<property name="jar.dir"		value="${build.dir}"/>
 	<property name="resources.dir"	value="resources"/>
     <property name="main-class"		value="de.sciss.net.NetUtil"/>
-    <property name="version"		value="0.36"/>
+    <property name="version"		value="0.37"/>
     <property name="debug"			value="true"/>
 	
 	<target name="clean">

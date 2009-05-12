@@ -45,7 +45,7 @@ import java.net.InetSocketAddress;
  *	or <code>PipeChannel</code>.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 02-Jul-07
+ *  @version	0.37, 12-May-09
  *
  *	@since		NetUtil 0.30
  */

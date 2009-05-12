@@ -52,7 +52,7 @@ import de.sciss.net.OSCServer;
  *	Some static test run methods.
  *
  *  @author		Hanns Holger Rutz
- *  @version	0.33, 25-Feb-08
+ *  @version	0.37, 12-May-09
  *
  *	@since		NetUtil 0.33
  */
@@ -328,6 +328,8 @@ public abstract class NetUtilTest
 		catch( IOException e1 ) { e1.printStackTrace(); }
 	}
 
+	protected static volatile boolean received; 
+		
 	/**
 	 *	Creates two receivers and two transmitters, one of each
 	 *	being restricted to loopback. Sends from each transmitter
@@ -337,37 +339,140 @@ public abstract class NetUtilTest
 	 */
 	public static void pingPong()
 	{
-		try {
-			final OSCReceiver		rcv1	= OSCReceiver.newUsing( OSCChannel.UDP, 0, true );
-			final OSCReceiver		rcv2	= OSCReceiver.newUsing( OSCChannel.UDP, 0, false);
-			final OSCTransmitter	trns1	= OSCTransmitter.newUsing( OSCChannel.UDP, 0, true );
-			final OSCTransmitter	trns2	= OSCTransmitter.newUsing( OSCChannel.UDP, 0, false );
+		final String[]	protos	= { OSCChannel.UDP, OSCChannel.TCP };
+		final String[]	words	= { "One", "Two", "Three", "Four", "Five", "Six",
+									"Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve" };
+		final Object	sync	= new Object();
+		int wordIdx = 0;
+		int failures = 0;
 		
-			rcv1.dumpOSC( OSCChannel.kDumpText, System.out );
-			rcv1.startListening();
-			rcv2.dumpOSC( OSCChannel.kDumpText, System.out );
-			rcv2.startListening();
+		System.out.println( "\n---------- RECEIVER / TRANSMITTER ----------" );
+		for( int i = 0; i < 1; i++ ) { // note: tcp requires a server socket
+			final String proto = protos[ i ];
+			System.out.println( "---------- Testing protocol '" + proto + "' ----------" );
+			for( int j = 0; j < 4; j++ ) {
+				final boolean rcvLoop		= j/2 == 0;
+				final boolean trnsLoop		= j % 2 == 0;
+				final boolean shouldFail	= !trnsLoop && rcvLoop;
+				received = false;
+				
+				System.out.println( "Receiver loopBack = " + rcvLoop + "; Transmitter loopBack = " + trnsLoop );
+				
+				OSCReceiver		rcv		= null;
+				OSCTransmitter	trns	= null;
+	
+				try {
+					rcv		= OSCReceiver.newUsing( proto, 0, rcvLoop );
+					trns	= OSCTransmitter.newUsing( proto, 0, trnsLoop );
+		
+					rcv.dumpOSC( OSCChannel.kDumpText, System.out );
+					rcv.startListening();
+					rcv.addOSCListener( new OSCListener() {
+						public void messageReceived( OSCMessage msg, SocketAddress addr, long when )
+						{
+							System.out.println( "   Received msg '" + msg.getName() + "' from " + addr );
+							synchronized( sync ) {
+								received = true;
+								sync.notifyAll();
+							}
+						}
+					});
 			
-			trns1.connect();
-			trns1.setTarget( new InetSocketAddress( "127.0.0.1", rcv1.getLocalAddress().getPort() ));
-			trns1.send( new OSCMessage( "/test", new Object[] { "one", "two" }));
-			trns1.setTarget( new InetSocketAddress( "127.0.0.1", rcv2.getLocalAddress().getPort() ));
-			trns1.send( new OSCMessage( "/test", new Object[] { "three", "four" }));
-			
-			trns2.connect();
-			trns2.setTarget( new InetSocketAddress( InetAddress.getLocalHost(), rcv1.getLocalAddress().getPort() ));
-			trns2.send( new OSCMessage( "/test", new Object[] { "five", "six" }));
-			trns2.setTarget( new InetSocketAddress( InetAddress.getLocalHost(), rcv2.getLocalAddress().getPort() ));
-			trns2.send( new OSCMessage( "/test", new Object[] { "seven", "eight" }));
-			
-			try { Thread.sleep( 2000 ); } catch( InterruptedException e1 ) { /* ignore */ }
-			
-			rcv1.dispose();
-			rcv2.dispose();
-			trns1.dispose();
-			trns2.dispose();
+					trns.connect();
+					final int targetPort = rcv.getLocalAddress().getPort();
+					final InetSocketAddress targetAddr = trnsLoop ?
+						new InetSocketAddress( "127.0.0.1", targetPort ) :
+						new InetSocketAddress( InetAddress.getLocalHost(), targetPort );
+					trns.setTarget( targetAddr );
+					trns.send( new OSCMessage( "/test", new Object[] { words[ wordIdx ], new Integer( wordIdx + 1 )}));
+						
+					try {
+						synchronized( sync ) {
+							sync.wait( 2000 );
+						}
+					} catch( InterruptedException e1 ) { /* ignore */ }
+				}
+				catch( IOException e1 ) {
+					e1.printStackTrace();
+				}
+				
+				if( received != shouldFail ) {
+					System.out.println( "... OK" );
+				} else {
+					System.out.println( "\n... FAILED!!!\n" );
+					failures++;
+				}
+				
+				rcv.dispose();
+				trns.dispose();
+				wordIdx = (wordIdx + 1) % words.length;
+			}
 		}
-		catch( IOException e1 ) { e1.printStackTrace(); }
+		
+		System.out.println( "\n------------- CLIENT / SERVER --------------" );
+		for( int i = 0; i < protos.length; i++ ) {
+			final String proto = protos[ i ];
+			System.out.println( "---------- Testing protocol '" + proto + "' ----------" );
+			for( int j = 0; j < 4; j++ ) {
+				final boolean clientLoop	= j/2 == 0;
+				final boolean serverLoop	= j % 2 == 0;
+				final boolean shouldFail	= !clientLoop && serverLoop;
+				received = false;
+
+				System.out.println( "Client loopBack = " + clientLoop + "; Server loopBack = " + serverLoop );
+
+				OSCClient	client	= null;
+				OSCServer	server	= null;
+				
+				try {
+					client	= OSCClient.newUsing( proto, 0, clientLoop );
+					server	= OSCServer.newUsing( proto, 0, serverLoop );
+		
+					server.dumpOSC( OSCChannel.kDumpText, System.out );
+					server.start();
+					server.addOSCListener( new OSCListener() {
+						public void messageReceived( OSCMessage msg, SocketAddress addr, long when )
+						{
+							System.out.println( "   Received msg '" + msg.getName() + "' from " + addr );
+							synchronized( sync ) {
+								received = true;
+								sync.notifyAll();
+							}
+						}
+					});
+			
+					final int targetPort = server.getLocalAddress().getPort();
+					final InetSocketAddress targetAddr = clientLoop ?
+						new InetSocketAddress( "127.0.0.1", targetPort ) :
+						new InetSocketAddress( InetAddress.getLocalHost(), targetPort );
+					client.setTarget( targetAddr );
+					client.connect();
+					client.send( new OSCMessage( "/test", new Object[] { words[ wordIdx ], new Integer( wordIdx + 1 )}));
+						
+					try {
+						synchronized( sync ) {
+							sync.wait( 2000 );
+						}
+					} catch( InterruptedException e1 ) { /* ignore */ }
+				}
+				catch( IOException e1 ) {
+					e1.printStackTrace();
+				}
+
+				if( received != shouldFail ) {
+					System.out.println( "... OK" );
+				} else {
+					System.out.println( "\n... FAILED!!!\n" );
+					failures++;
+				}
+				
+				client.dispose();
+				server.dispose();
+				wordIdx = (wordIdx + 1) % words.length;
+			}
+		}
+		
+		System.out.println( "\nNumber of tests failed: " + failures );
 	}
 	
 	protected static void postln( String s )
