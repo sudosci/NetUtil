@@ -104,8 +104,11 @@ The current version can be downloaded here:
 documentation
 </h3>
 <p>
-When you modify the sourcecode, you will want to re-create the javadoc files. To do so, open a terminal, <code>cd</code> into the NetUtil folder and run the <code>makedoc.sh</code> file.
+Documentation comes in the form of JavaDoc. The generate the docs, open a terminal, <code>cd</code> into the JCollider folder and run:
 </P>
+<PRE>
+$ ant doc
+</PRE>
 <UL>
 <LI><A HREF="doc/api/index.html">API index (local copy)</A></LI>
 <LI><A HREF="http://www.sciss.de/netutil/doc/api/index.html" TARGET="_blank" CLASS="ext">API index (online)</A></LI>
@@ -117,9 +120,9 @@ compilation / usage
 <SPAN CLASS="lightRed">Please read the <A HREF="DevelopersNeeded!.txt">DevelopersNeeded</A> note.</SPAN>
 </P>
 <P>
-The source code can be compiled using Eclipse SDK 3.2+ (<A HREF="http://www.eclipse.org" TARGET="_blank" CLASS="ext">www.eclipse.org</A>) and Apache Ant 1.6.5+ (<A HREF="http://ant.apache.org/" TARGET="_blank" CLASS="ext">ant.apache.org</A>). The Eclipse project file is configured to run the regular Ant build file. You can make a clean build just with Ant from the terminal:
-</P><PRE>> ant clean jar
-> ant test
+The source code can be compiled using Eclipse SDK 3.4+ (<A HREF="http://www.eclipse.org" TARGET="_blank" CLASS="ext">www.eclipse.org</A>) and Apache Ant 1.6.5+ (<A HREF="http://ant.apache.org/" TARGET="_blank" CLASS="ext">ant.apache.org</A>). The Eclipse project file is configured to run the regular Ant build file. You can make a clean build just with Ant from the terminal:
+</P><PRE>$ ant clean jar
+$ ant test
 </PRE>
 <P>The <code>&quot;test&quot;</code> will run with UDP server test, you can leave away that task. If you want a more compact build without debugging (line numbers) information, add <code>-Ddebug=false</code> to the ant call.
 </P><P>
@@ -149,7 +152,7 @@ to-do / known issues
 <LI>add helper classes (multi-server wrapper, message deferrer)</LI>
 </UL>
 <h3>change history</h3>
-<h4>v0.38 (may 2009 - SVN rev. 20)</h4>
+<h4>v0.38 (may 2009 - SVN rev. 21)</h4>
 <UL>
 <LI>Removed makedoc.sh in favour of a doc ant target</LI>
 </UL>
