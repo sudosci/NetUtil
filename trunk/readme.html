@@ -1,11 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+        "http://www.w3.org/TR/1998/REC-html40-19980424/loose.dtd">
 <HTML>
 <HEAD>
 	<TITLE>NetUtil OSC Library for Java - Readme</TITLE>
-	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 	<LINK REL="stylesheet" TYPE="text/css" HREF="help/stylesheet.css">
 	<META NAME="description" content="NetUtil is a compact and efficient java library for sending and receiving messages using the OpenSoundControl (OSC) protocol">
-	<META NAME="keywords" content="OSC, Java, Open Sound Control, Library">
+	<META NAME="keywords" content="OSC, Java, Open Sound Control, Library, Android">
 	<STYLE TYPE="text/css"><!--
 BODY {
 	background:#614151;
@@ -76,11 +77,11 @@ TD.when {
 </HEAD>
 <BODY>
 <h1>
-NetUtil <small>-- version 0.38 (built 18-jul-09) --</small>
+NetUtil <small>-- version 0.39 (built 12-jun-11) --</small>
 </h1>
 <h3>statement</h3>
 <p>
-NetUtil is a compact and efficient java library for sending and receiving messages using the OpenSoundControl (OSC) protocol. It is (C)opyright 2004&ndash;2009 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the <A HREF="licenses/NetUtil-License.txt">GNU Lesser General Public License</A> and comes with absolutely no warranties. To contact the author, send an email to <code>contact&nbsp;at&nbsp;sciss.de</code>
+NetUtil is a compact and efficient java library for sending and receiving messages using the OpenSoundControl (OSC) protocol. It is (C)opyright 2004&ndash;2011 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the <A HREF="licenses/NetUtil-License.txt">GNU Lesser General Public License</A> and comes with absolutely no warranties. To contact the author, send an email to <code>contact&nbsp;at&nbsp;sciss.de</code>
 </p>
 <p>
 For project status, API and current version, visit <a href="http://www.sciss.de/netutil/" TARGET="_blank" CLASS="ext">www.sciss.de/netutil</a>.
@@ -89,7 +90,7 @@ For project status, API and current version, visit <a href="http://www.sciss.de/
 requirements / installation
 </h3>
 <p>
-NetUtil requires a Java(tm) 1.4+ environment. visit <A HREF="http://java.sun.com" TARGET="_blank" CLASS="ext">java.sun.com</A> for more information about Java.
+NetUtil requires a Java(tm) 1.4+ environment. NetUtil has also been successfuly running on Android.
 </p>
 <P>
 <h3>download</h3>
@@ -140,9 +141,11 @@ The final product will be a file <code>build/NetUtil.jar</code> which you can in
 <P>here is some sporadic list of projects which seem to use NetUtil. if you want to have your project added here, send me the links:
 </P>
 <UL>
+<LI><A HREF="http://code.google.com/p/androidome/" TARGET="_blank" CLASS="ext">Androidome</A> &ndash; android-based emulator for the monome music making device</LI>
+<LI><A HREF="http://www3.math.tu-berlin.de/jreality/" TARGET="_blank" CLASS="ext">jReality</A></LI>
 <LI><A HREF="http://blog.cappel-nord.de/2008/07/frozen-bubble/" TARGET="_blank" CLASS="ext">Frozen Bubble OSCified</A></LI>
 <LI><A HREF="http://diablu.jorgecardoso.eu/" TARGET="_blank" CLASS="ext">DiABlu</A> Scout and LegOSC</LI>
-<LI><A HREF="http://amico.sourceforge.net/" TARGET="_blank" CLASS="ext">AMICO</A>
+<LI><A HREF="http://amico.sourceforge.net/" TARGET="_blank" CLASS="ext">AMICO</A></LI>
 </UL>
 <h3>
 to-do / known issues
@@ -152,6 +155,10 @@ to-do / known issues
 <LI>add helper classes (multi-server wrapper, message deferrer)</LI>
 </UL>
 <h3>change history</h3>
+<h4>v0.39 (jun 2011 - SVN rev. 23)</h4>
+<UL>
+<LI>OSCClient and OSCTransmitter creation: socket's IP defaults to "0.0.0.0" now instead of InetAddress.getLocalHost(). Allegedly that was responsible for an issue on Android.</LI>
+</UL>
 <h4>v0.38 (may 2009 - SVN rev. 21)</h4>
 <UL>
 <LI>Removed makedoc.sh in favour of a doc ant target</LI>

@@ -96,6 +96,11 @@ API changes from v0.36 to v0.35
 		most likely the desired result, besides staying mostly backwards compatible.
 		getLocalHost() may throw however the IOException (UnknownHostException).
 
+API changes from v0.38 to v0.39
+- OSCTransmitter binds to IP "0.0.0.0" instead of InetAddress.getLocalHost() when loopBack is false.
+  Apparently that allows them to connect from Android.
+- OSCTransmitter getLocalAddress throws IOException now, as it also resolves IP 0.0.0.0 like OSCReceiver
+
 ---
 
 
