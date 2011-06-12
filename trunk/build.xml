@@ -12,7 +12,7 @@
 	<property name="resources.dir"	value="resources"/>
     <property name="main-class"		value="de.sciss.net.NetUtil"/>
 	<property name="doc.dir"		value="doc"/>
-    <property name="version"		value="0.38"/>
+    <property name="version"		value="0.39"/>
     <property name="debug"			value="true"/>
 	
 	<target name="clean">
