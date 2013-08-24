@@ -16,7 +16,7 @@ To compile `sbt compile`, to generate a jar `sbt package`.
 
 ## linking
 
-To use sbt in your project, you can link to the following [Maven](http://search.maven.org) artifact:
+To use NetUtil in your project, you can link to the following [Maven](http://search.maven.org) artifact:
 
     GroupId: de.sciss
     ArtifactId: netutil
@@ -28,11 +28,11 @@ Documentation comes in the form of JavaDoc. The generate the docs, run `sbt doc`
 
 You can run some demos using `sbt`. First run `./sbt`. At the prompt:
 
-> run
+    > run
 
 This will print to available options. E.g.
 
-> run --testPingPong
+    > run --testPingPong
 
 ## noteworthy links
 
