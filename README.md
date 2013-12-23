@@ -2,7 +2,7 @@
 
 ## statement
 
-NetUtil is a compact and efficient Java library for sending and receiving messages using the OpenSoundControl (OSC) protocol. It is (C)opyright 2004&ndash;2013 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the [GNU Lesser General Public License](licenses/NetUtil-License.txt) and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`.
+NetUtil is a compact and efficient Java library for sending and receiving messages using the OpenSoundControl (OSC) protocol. It is (C)opyright 2004&ndash;2013 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the [GNU Lesser General Public License](https://raw.github.com/Sciss/NetUtil/master/LICENSE) and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`.
 
 For project status, API and current version, visit [github.com/Sciss/NetUtil](https://github.com/Sciss/NetUtil).
 
@@ -10,7 +10,7 @@ Note that this project is not actively developed any more (unless there are bugs
 
 ## requirements / building
 
-NetUtil requires Java 1.4+. NetUtil has also been successfuly running on Android. It uses [sbt](http://sbt.github.com/) 0.12 for building. You can use the included `sbt` shell script if you do not want to install sbt.
+NetUtil requires Java 1.4+. NetUtil has also been successfuly running on Android. It uses [sbt](http://sbt.github.com/) 0.13 for building. You can use the included `sbt` shell script if you do not want to install sbt.
 
 To compile `sbt compile`, to generate a jar `sbt package`.
 
