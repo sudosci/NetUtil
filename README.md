@@ -50,6 +50,7 @@ Here is some sporadic list of projects which seem to use NetUtil. if you want to
 - [Frozen Bubble OSCified](http://blog.cappel-nord.de/2008/07/frozen-bubble/)
 - [DiABlu](http://diablu.jorgecardoso.eu/) &ndash; Scout and LegOSC
 - [AMICO](http://amico.sourceforge.net/")
+- [Protocoder](http://www.protocoder.org/")
 
 ## to-do / known issues
 
