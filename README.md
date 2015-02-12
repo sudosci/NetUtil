@@ -1,5 +1,8 @@
 # NetUtil
 
+[![Flattr this](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=sciss&url=https%3A%2F%2Fgithub.com%2FSciss%2FNetUtil&title=NetUtil%20OSC%20Library&language=Scala&tags=github&category=software)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/netutil/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/netutil)
+
 ## statement
 
 NetUtil is a compact and efficient Java library for sending and receiving messages using the OpenSoundControl (OSC) protocol. It is (C)opyright 2004&ndash;2013 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the [GNU Lesser General Public License](https://raw.github.com/Sciss/NetUtil/master/LICENSE) and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`.
