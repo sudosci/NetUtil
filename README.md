@@ -1,11 +1,12 @@
 # NetUtil
 
 [![Flattr this](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=sciss&url=https%3A%2F%2Fgithub.com%2FSciss%2FNetUtil&title=NetUtil%20OSC%20Library&language=Java&tags=github&category=software)
+[![Build Status](https://travis-ci.org/Sciss/NetUtil.svg?branch=master)](https://travis-ci.org/Sciss/NetUtil)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sciss/netutil/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sciss/netutil)
 
 ## statement
 
-NetUtil is a compact and efficient Java library for sending and receiving messages using the OpenSoundControl (OSC) protocol. It is (C)opyright 2004&ndash;2013 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the [GNU Lesser General Public License](https://raw.github.com/Sciss/NetUtil/master/LICENSE) and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`.
+NetUtil is a compact and efficient Java library for sending and receiving messages using the OpenSoundControl (OSC) protocol. It is (C)opyright 2004&ndash;2016 by Hanns Holger Rutz. All rights reserved. NetUtil is released under the [GNU Lesser General Public License](https://raw.github.com/Sciss/NetUtil/master/LICENSE) and comes with absolutely no warranties. To contact the author, send an email to `contact at sciss.de`.
 
 For project status, API and current version, visit [github.com/Sciss/NetUtil](https://github.com/Sciss/NetUtil).
 
@@ -24,6 +25,10 @@ To use NetUtil in your project, you can link to the following [Maven](http://sea
     GroupId: de.sciss
     ArtifactId: netutil
     Version: 1.0.0
+
+## contributing
+
+Please see the file [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## documentation
 
