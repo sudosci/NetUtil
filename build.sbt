@@ -6,11 +6,11 @@ organization     := "de.sciss"
 
 description      := "A Java library for sending and receiving messages using the OpenSoundControl (OSC) protocol"
 
-homepage         := Some(url("https://github.com/Sciss/" + name.value))
+homepage         := Some(url(s"https://github.com/Sciss/${name.value}"))
 
 licenses         := Seq("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt"))
 
-scalaVersion     := "2.10.3"
+scalaVersion     := "2.11.7"
 
 crossPaths       := false      // this is just a Java only project
 
@@ -26,7 +26,7 @@ libraryDependencies += "org.scala-lang" % "scala-library" % scalaVersion.value %
 publishMavenStyle := true
 
 publishTo :=
-  Some(if (version.value endsWith "-SNAPSHOT")
+  Some(if (isSnapshot.value)
     "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
   else
     "Sonatype Releases"  at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
